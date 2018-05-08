@@ -1,0 +1,16 @@
+{
+  "generator-ng-fullstack": {
+    "appName": "interest-matching-app",
+    "username": "frediansimanjuntak",
+    "userEmail": "fredian.pc@gmail.com",
+    "stack": "server",
+    "repoHostUrl": "github.com",
+    "userNameSpace": "frediansimanjuntak",
+    "client": "",
+    "server": "node",
+    "nodeWebFrameworkServer": "express",
+    "transpilerServer": "typescript",
+    "secure": true,
+    "testsSeparated": true
+  }
+}
