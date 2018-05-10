@@ -6,23 +6,42 @@ const bcrypt = require('bcrypt');
 const Schema = mongoose.Schema;
 
 let UsersSchema = new mongoose.Schema({
-    first_name: {type: String, lowercase: true, trim: true},
-    last_name: {type: String, lowercase: true, trim: true},
-    username: {type: String, unique: true, required: true, trim: true},
-    email: {type: String, unique: true, required: true, trim: true},
-    password: {type: String, required: true, select: false},
-    nickname: {type: String, trim: true},
-    language: {type: String, trim: true},
-    gender: {type: String,  enum: ['user','admin'], trim: true},
-    dob: {type: Date, trim: true},
-    last_known_lat: {type: String, trim: true},
-    last_known_lng: {type: String, trim: true},
-    email_confirmation_code: {type: String, required: true, trim: true},
-    email_verified: {type: Boolean, default: false, trim: true},
-    disabled: {type: Boolean, default: false, trim: true},
-    status: {type: String, trim: true},
-    createdAt: {type: Date, default: Date.now},
-    updatedAt: {type: Date, default: Date.now}
+  username: {type: String, unique: true, required: true, trim: true},
+  email: {type: String, unique: true, required: true, trim: true},
+  phone: {type: String, unique: true, required: true, trim: true},
+  password: {type: String, required: true, select: false},
+  first_name: {type: String, lowercase: true, trim: true},
+  last_name: {type: String, lowercase: true, trim: true},
+  nickname: {type: String, trim: true},
+  language: {type: String, trim: true},
+  gender: {type: String,  enum: ['male','female'], trim: true},
+  dob: {type: Date, trim: true},
+  last_known_lat: {type: String, trim: true},
+  last_known_lng: {type: String, trim: true},
+  verification: {
+    code:{type: String, required: true, trim: true},
+    verified:{        
+      type:{type: String,  enum: ['email','phone'], trim: true},
+      status: {type: Boolean, default: false, trim: true}        
+    }
+  },
+  disabled: {type: Boolean, default: false, trim: true},
+  status: {type: String, trim: true},
+  role: {type: String,  enum: ['user','admin'], trim: true},
+  education: [{
+    type: {type: String, trim: true},
+    school_name: {type: String, trim: true},
+  }],
+  photo: [{
+    name: {type: String, trim: true},
+    url: {type: String, trim: true},
+  }],
+  occupation: [{
+    job_title: {type: String, trim: true},
+    company_name: {type: String, trim: true},
+  }],
+  created_at: {type: Date, default: Date.now},
+  updated_at: {type: Date, default: Date.now}
 });
 
 // Public profile information
