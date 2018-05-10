@@ -31,13 +31,17 @@ var UsersSchema = new mongoose.Schema({
             type: { type: String, trim: true },
             school_name: { type: String, trim: true },
         }],
-    photo: [{
-            name: { type: String, trim: true },
-            url: { type: String, trim: true },
-        }],
     occupation: [{
             job_title: { type: String, trim: true },
             company_name: { type: String, trim: true },
+        }],
+    interest: [{
+            type: Schema.Types.ObjectId,
+            ref: 'interest'
+        }],
+    photo: [{
+            name: { type: String, trim: true },
+            url: { type: String, trim: true },
         }],
     created_at: { type: Date, default: Date.now },
     updated_at: { type: Date, default: Date.now }
