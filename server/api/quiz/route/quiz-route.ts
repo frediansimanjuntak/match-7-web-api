@@ -3,7 +3,7 @@
 import * as express from "express";
 import {QuizController} from "../controller/quiz-controller";
 
-export class TodoRoutes {
+export class QuizRoutes {
     static init(router: express.Router) {
       router
         .route("/api/quiz")

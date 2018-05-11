@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var quiz_controller_1 = require("../controller/quiz-controller");
-var TodoRoutes = /** @class */ (function () {
-    function TodoRoutes() {
+var QuizRoutes = /** @class */ (function () {
+    function QuizRoutes() {
     }
-    TodoRoutes.init = function (router) {
+    QuizRoutes.init = function (router) {
         router
             .route("/api/quiz")
             .get(quiz_controller_1.QuizController.getAll)
@@ -13,7 +13,7 @@ var TodoRoutes = /** @class */ (function () {
             .route("/api/quiz/:id")
             .delete(quiz_controller_1.QuizController.deleteQuiz);
     };
-    return TodoRoutes;
+    return QuizRoutes;
 }());
-exports.TodoRoutes = TodoRoutes;
+exports.QuizRoutes = QuizRoutes;
 //# sourceMappingURL=quiz-route.js.map
