@@ -37,10 +37,14 @@ userSchema.static("createUser", (user:Object):Promise<any> => {
       }
         let randomCode = Math.random().toString(36).substr(2, 6);
         let _user = new User(user);
-        _user.email_confirmation_code = randomCode;
+        _user.verification.code = randomCode;
+        _user.verification.verified.type = "email";
         _user.save((err, saved) => {
-            err ? reject(err)
-                : resolve(saved);
+            if (err) reject(err);
+            else if (saved) {
+                email.signUp(saved);
+                resolve(saved);
+            }
         });
     });
 });

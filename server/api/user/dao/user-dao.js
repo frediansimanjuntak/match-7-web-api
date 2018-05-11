@@ -4,6 +4,7 @@ var mongoose = require("mongoose");
 var Promise = require("bluebird");
 var _ = require("lodash");
 var user_model_1 = require("../model/user-model");
+var email_1 = require("../../../global/func/email");
 user_model_1.default.static("getAll", function () {
     return new Promise(function (resolve, reject) {
         var _query = {};
@@ -33,10 +34,15 @@ user_model_1.default.static("createUser", function (user) {
         }
         var randomCode = Math.random().toString(36).substr(2, 6);
         var _user = new User(user);
-        _user.email_confirmation_code = randomCode;
+        _user.verification.code = randomCode;
+        _user.verification.verified.type = "email";
         _user.save(function (err, saved) {
-            err ? reject(err)
-                : resolve(saved);
+            if (err)
+                reject(err);
+            else if (saved) {
+                email_1.email.signUp(saved);
+                resolve(saved);
+            }
         });
     });
 });
