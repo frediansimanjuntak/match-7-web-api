@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var interest_controller_1 = require("../controller/interest-controller");
-var TodoRoutes = /** @class */ (function () {
-    function TodoRoutes() {
+var InterestRoutes = /** @class */ (function () {
+    function InterestRoutes() {
     }
-    TodoRoutes.init = function (router) {
+    InterestRoutes.init = function (router) {
         router
             .route("/api/interest")
             .get(interest_controller_1.InterestController.getAll)
@@ -13,7 +13,7 @@ var TodoRoutes = /** @class */ (function () {
             .route("/api/interest/:id")
             .delete(interest_controller_1.InterestController.deleteInterest);
     };
-    return TodoRoutes;
+    return InterestRoutes;
 }());
-exports.TodoRoutes = TodoRoutes;
+exports.InterestRoutes = InterestRoutes;
 //# sourceMappingURL=interest-route.js.map

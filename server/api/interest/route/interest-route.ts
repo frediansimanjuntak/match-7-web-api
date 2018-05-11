@@ -3,7 +3,7 @@
 import * as express from "express";
 import {InterestController} from "../controller/interest-controller";
 
-export class TodoRoutes {
+export class InterestRoutes {
     static init(router: express.Router) {
       router
         .route("/api/interest")
