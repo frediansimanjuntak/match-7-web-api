@@ -8,10 +8,13 @@ var UserRoutes = /** @class */ (function () {
         router
             .route("/api/users")
             .get(user_controller_1.UserController.getAll)
-            .post(user_controller_1.UserController.createTodo);
+            .post(user_controller_1.UserController.createUser);
         router
             .route("/api/users/:id")
-            .delete(user_controller_1.UserController.deleteTodo);
+            .delete(user_controller_1.UserController.deleteUser);
+        router
+            .route("/api/users/activation")
+            .post(user_controller_1.UserController.activateUser);
     };
     return UserRoutes;
 }());

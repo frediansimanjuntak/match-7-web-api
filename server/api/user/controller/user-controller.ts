@@ -12,20 +12,29 @@ export class UserController {
   static getById(req: express.Request, res: express.Response):void {
     UserDAO
         ["getById"](req.params.id)
-        .then(todo => res.status(200).json(todo))
+        .then(user => res.status(200).json(user))
         .catch(error => res.status(400).json(error));
   }
 
-  static createTodo(req: express.Request, res: express.Response):void {
-      let _todo = req.body;
+  static activateUser(req: express.Request, res: express.Response):void {
+    let _user = req.body;
 
     UserDAO
-        ["createUser"](_todo)
-        .then(todo => res.status(201).json(todo))
+        ["activateUser"](_user)
+        .then(user => res.status(200).json(user))
         .catch(error => res.status(400).json(error));
   }
 
-  static deleteTodo(req: express.Request, res: express.Response): void {
+  static createUser(req: express.Request, res: express.Response):void {
+      let _user = req.body;
+
+    UserDAO
+        ["createUser"](_user)
+        .then(user => res.status(201).json(user))
+        .catch(error => res.status(400).json(error));
+  }
+
+  static deleteUser(req: express.Request, res: express.Response): void {
     let _id = req.params.id;
 
     UserDAO

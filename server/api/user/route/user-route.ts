@@ -8,10 +8,15 @@ export class UserRoutes {
       router
         .route("/api/users")
         .get(UserController.getAll)
-        .post(UserController.createTodo);
+        .post(UserController.createUser);
 
       router
         .route("/api/users/:id")
-        .delete(UserController.deleteTodo);
+        .delete(UserController.deleteUser);
+      
+      
+      router
+        .route("/api/users/activation")
+        .post(UserController.activateUser);
     }
 }

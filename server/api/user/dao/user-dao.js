@@ -46,6 +46,24 @@ user_model_1.default.static("createUser", function (user) {
         });
     });
 });
+user_model_1.default.static("activateUser", function (user) {
+    return new Promise(function (resolve, reject) {
+        if (!_.isObject(user)) {
+            return reject(new TypeError("User is not a valid object."));
+        }
+        User.findOneAndUpdate({
+            'email': user['email'],
+            'verification.code': user['code'],
+            'verification.verified.type': user['type']
+        }, { $set: {
+                'verification.verified.status': true
+            } })
+            .exec(function (err, user) {
+            err ? reject(err)
+                : resolve(user);
+        });
+    });
+});
 user_model_1.default.static("deleteUser", function (id) {
     return new Promise(function (resolve, reject) {
         if (!_.isString(id)) {

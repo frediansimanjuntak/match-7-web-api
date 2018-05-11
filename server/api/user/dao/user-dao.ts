@@ -49,6 +49,26 @@ userSchema.static("createUser", (user:Object):Promise<any> => {
     });
 });
 
+userSchema.static("activateUser", (user:Object):Promise<any> => {
+    return new Promise((resolve:Function, reject:Function) => {
+        if (!_.isObject(user)) {
+            return reject(new TypeError("User is not a valid object."));
+          }
+        User.findOneAndUpdate({
+            'email':user['email'],
+            'verification.code':user['code'],
+            'verification.verified.type':user['type']
+        },{$set:{
+            'verification.verified.status':true
+        }})
+            .exec((err, user) => {
+                
+              err ? reject(err)
+                  : resolve(user);
+            });
+    });
+});
+
 userSchema.static("deleteUser", (id:string):Promise<any> => {
     return new Promise((resolve:Function, reject:Function) => {
         if (!_.isString(id)) {
