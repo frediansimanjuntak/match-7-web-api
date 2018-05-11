@@ -9,7 +9,7 @@ var UsersSchema = new mongoose.Schema({
     last_name: { type: String, lowercase: true, trim: true },
     username: { type: String, unique: true, required: true, trim: true },
     email: { type: String, unique: true, required: true, trim: true },
-    phone: { type: String, unique: true, required: true, trim: true },
+    phone: { type: String, unique: true, trim: true },
     password: { type: String, required: true, select: false },
     nickname: { type: String, trim: true },
     language: { type: String, trim: true },
@@ -18,7 +18,7 @@ var UsersSchema = new mongoose.Schema({
     last_known_lat: { type: String, trim: true },
     last_known_lng: { type: String, trim: true },
     verification: {
-        code: { type: String, required: true, trim: true },
+        code: { type: String, trim: true },
         verified: {
             type: { type: String, enum: ['email', 'phone'], trim: true },
             status: { type: Boolean, default: false, trim: true }
@@ -38,6 +38,10 @@ var UsersSchema = new mongoose.Schema({
     photo: [{
             name: { type: String, trim: true },
             url: { type: String, trim: true },
+        }],
+    interest: [{
+            type: Schema.Types.ObjectId,
+            ref: 'Interests'
         }],
     created_at: { type: Date, default: Date.now },
     updated_at: { type: Date, default: Date.now }
