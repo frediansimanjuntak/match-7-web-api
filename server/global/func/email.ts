@@ -4,7 +4,7 @@ import * as _ from 'lodash';
 import config from '../../config/environment/index';
 import {EmailService} from '../service/email';
 
-export class mail{
+export class email{
 	static signUp(data){
 		let body:any = data;
 		return new Promise((resolve:Function, reject:Function) => {

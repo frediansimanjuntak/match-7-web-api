@@ -2,6 +2,7 @@ import * as mongoose from "mongoose";
 import * as Promise from "bluebird";
 import * as _ from "lodash";
 import userSchema from "../model/user-model";
+import {email} from '../../../global/func/email';
 
 userSchema.static("getAll", ():Promise<any> => {
     return new Promise((resolve:Function, reject:Function) => {

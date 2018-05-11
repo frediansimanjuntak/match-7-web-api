@@ -5,12 +5,12 @@ var sha256 = require('sha256');
 var bcrypt = require('bcrypt');
 var Schema = mongoose.Schema;
 var UsersSchema = new mongoose.Schema({
+    first_name: { type: String, lowercase: true, trim: true },
+    last_name: { type: String, lowercase: true, trim: true },
     username: { type: String, unique: true, required: true, trim: true },
     email: { type: String, unique: true, required: true, trim: true },
     phone: { type: String, unique: true, required: true, trim: true },
     password: { type: String, required: true, select: false },
-    first_name: { type: String, lowercase: true, trim: true },
-    last_name: { type: String, lowercase: true, trim: true },
     nickname: { type: String, trim: true },
     language: { type: String, trim: true },
     gender: { type: String, enum: ['male', 'female'], trim: true },
@@ -28,16 +28,12 @@ var UsersSchema = new mongoose.Schema({
     status: { type: String, trim: true },
     role: { type: String, enum: ['user', 'admin'], trim: true },
     education: [{
-            type: { type: String, trim: true },
+            type: { type: String, enum: ['degree', 'master', 'doctorate', 'diploma', 'high school'], trim: true },
             school_name: { type: String, trim: true },
         }],
     occupation: [{
             job_title: { type: String, trim: true },
             company_name: { type: String, trim: true },
-        }],
-    interest: [{
-            type: Schema.Types.ObjectId,
-            ref: 'interest'
         }],
     photo: [{
             name: { type: String, trim: true },

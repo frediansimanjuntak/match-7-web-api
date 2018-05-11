@@ -2,10 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var Promise = require("bluebird");
 var email_1 = require("../service/email");
-var mail = /** @class */ (function () {
-    function mail() {
+var email = /** @class */ (function () {
+    function email() {
     }
-    mail.signUp = function (data) {
+    email.signUp = function (data) {
         var body = data;
         return new Promise(function (resolve, reject) {
             var emailSubject = 'Sign Up';
@@ -16,7 +16,7 @@ var mail = /** @class */ (function () {
             });
         });
     };
-    return mail;
+    return email;
 }());
-exports.mail = mail;
+exports.email = email;
 //# sourceMappingURL=email.js.map
