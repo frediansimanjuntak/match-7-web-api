@@ -59,7 +59,7 @@ export class UserController {
 
     UserDAO
         ["deleteUser"](_id)
-        .then((user) => res.status(200).end(user))
+        .then((user) => res.status(200).json(user))
         .catch(error => res.status(400).json(error));
   }
 
@@ -69,7 +69,7 @@ export class UserController {
 
     UserDAO
         ["addUserEducation"](_userId, _user)
-        .then((user) => res.status(200).end(user))
+        .then((user) => res.status(200).json(user))
         .catch(error => res.status(400).json(error));
   }
 
@@ -80,7 +80,7 @@ export class UserController {
 
     UserDAO
         ["editUserEducation"](_userId, _idEducation, _user)
-        .then((user) => res.status(200).end(user))
+        .then((user) => res.status(200).json(user))
         .catch(error => res.status(400).json(error));
   }
 }

@@ -8,9 +8,9 @@ quiz_model_1.default.static("getAll", function () {
     return new Promise(function (resolve, reject) {
         var _query = {};
         Quiz.find(_query)
-            .exec(function (err, quizs) {
-            err ? reject(err)
-                : resolve(quizs);
+            .exec(function (err, quizzes) {
+            err ? reject({ success: false, message: err.message })
+                : resolve({ success: true, data: quizzes });
         });
     });
 });
@@ -21,8 +21,8 @@ quiz_model_1.default.static("getById", function (id) {
         }
         Quiz.findById(id)
             .exec(function (err, quiz) {
-            err ? reject(err)
-                : resolve(quiz);
+            err ? reject({ success: false, message: err.message })
+                : resolve({ success: true, data: quiz });
         });
     });
 });
@@ -33,8 +33,8 @@ quiz_model_1.default.static("createQuiz", function (quiz) {
         }
         var _quiz = new Quiz(quiz);
         _quiz.save(function (err, saved) {
-            err ? reject(err)
-                : resolve(saved);
+            err ? reject({ success: false, message: err.message })
+                : resolve({ success: true, data: saved });
         });
     });
 });
@@ -45,8 +45,51 @@ quiz_model_1.default.static("deleteQuiz", function (id) {
         }
         Quiz.findByIdAndRemove(id)
             .exec(function (err, deleted) {
-            err ? reject(err)
-                : resolve();
+            err ? reject({ success: false, message: err.message })
+                : resolve({ success: true, data: { message: "Deleted success" } });
+        });
+    });
+});
+quiz_model_1.default.static("addQuestion", function (id, question) {
+    return new Promise(function (resolve, reject) {
+        if (!_.isObject(question)) {
+            return reject(new TypeError("User is not a valid object."));
+        }
+        var body = question;
+        var updatePushObj = { $push: {} };
+        updatePushObj.$push['question'] = ({ 'name': body.name, 'type': body.type, 'select_options': body.select_options });
+        Quiz.findByIdAndUpdate(id, updatePushObj)
+            .exec(function (err, quiz) {
+            if (err) {
+                reject({ success: false, message: err.message });
+            }
+            else {
+                Quiz.findById(id)
+                    .exec(function (err, quiz) {
+                    err ? reject({ success: false, message: err.message })
+                        : resolve({ success: true, data: quiz });
+                });
+            }
+        });
+    });
+});
+quiz_model_1.default.static("editQuestion", function (id, id_question, question) {
+    return new Promise(function (resolve, reject) {
+        if (!_.isObject(question)) {
+            return reject(new TypeError("User is not a valid object."));
+        }
+        var ObjectID = mongoose.Types.ObjectId;
+        var body = question;
+        Quiz.update({ '_id': id, 'question': { $elemMatch: { '_id': new ObjectID(id_question) } } }, {
+            $set: {
+                'question.$.name': body.name,
+                'question.$.type': body.type,
+                'question.$.select_options': body.select_option
+            }
+        })
+            .exec(function (err, quiz) {
+            err ? reject({ success: false, message: err.message })
+                : resolve({ success: true, data: quiz });
         });
     });
 });

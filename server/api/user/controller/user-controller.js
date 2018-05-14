@@ -43,14 +43,14 @@ var UserController = /** @class */ (function () {
     UserController.deleteUser = function (req, res) {
         var _id = req.params.id;
         user_dao_1.default["deleteUser"](_id)
-            .then(function (user) { return res.status(200).end(user); })
+            .then(function (user) { return res.status(200).json(user); })
             .catch(function (error) { return res.status(400).json(error); });
     };
     UserController.addUserEducation = function (req, res) {
         var _userId = req["user"]._id;
         var _user = req.body;
         user_dao_1.default["addUserEducation"](_userId, _user)
-            .then(function (user) { return res.status(200).end(user); })
+            .then(function (user) { return res.status(200).json(user); })
             .catch(function (error) { return res.status(400).json(error); });
     };
     UserController.editUserEducation = function (req, res) {
@@ -58,7 +58,7 @@ var UserController = /** @class */ (function () {
         var _idEducation = req.params.id_education;
         var _user = req.body;
         user_dao_1.default["editUserEducation"](_userId, _idEducation, _user)
-            .then(function (user) { return res.status(200).end(user); })
+            .then(function (user) { return res.status(200).json(user); })
             .catch(function (error) { return res.status(400).json(error); });
     };
     return UserController;

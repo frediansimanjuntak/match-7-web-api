@@ -5,7 +5,7 @@ export class QuizController {
   static getAll(req: express.Request, res: express.Response): void {
     QuizDAO
         ["getAll"]()
-        .then(quizes => res.status(200).json(quizes))
+        .then(quizzes => res.status(200).json(quizzes))
         .catch(error => res.status(400).json(error));
   }
 
@@ -30,7 +30,28 @@ export class QuizController {
 
     QuizDAO
       ["deleteQuiz"](_id)
-      .then(() => res.status(200).end())
+      .then((quiz) => res.status(200).json(quiz))
       .catch(error => res.status(400).json(error));
+  }
+  
+  static addQuestion(req: express.Request, res: express.Response): void {
+    let _id = req.params.id;
+    let _quiz = req.body;
+
+    QuizDAO
+        ["addQuestion"](_id, _quiz)
+        .then((quiz) => res.status(200).json(quiz))
+        .catch(error => res.status(400).json(error));
+  }
+
+  static editQuestion(req: express.Request, res: express.Response): void {
+    let _id = req.params.id;
+    let _idQuestion = req.params.id_question;
+    let _quiz = req.body;
+
+    QuizDAO
+        ["editQuestion"](_id, _idQuestion, _quiz)
+        .then((quiz) => res.status(200).json(quiz))
+        .catch(error => res.status(400).json(error));
   }
 }

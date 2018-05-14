@@ -12,6 +12,15 @@ export class QuizRoutes {
 
       router
         .route("/api/quiz/:id")
+        .get(QuizController.getById)
         .delete(QuizController.deleteQuiz);
+      
+      router
+        .route("/api/quiz/question/add/:id")
+        .post(QuizController.addQuestion);
+      
+      router
+        .route("/api/quiz/question/update/:id/:id_question")
+        .post(QuizController.editQuestion);
     }
 }

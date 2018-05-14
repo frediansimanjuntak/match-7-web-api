@@ -8,9 +8,9 @@ quizSchema.static("getAll", ():Promise<any> => {
         let _query = {};
 
         Quiz.find(_query)
-            .exec((err, quizs) => {
-              err ? reject(err)
-                  : resolve(quizs);
+            .exec((err, quizzes) => {
+              err ? reject({success:false, message: err.message})
+                  : resolve({success:true, data: quizzes});
             });
     });
 });
@@ -23,8 +23,8 @@ quizSchema.static("getById", (id: string):Promise<any> => {
 
         Quiz.findById(id)
             .exec((err, quiz) => {
-              err ? reject(err)
-                  : resolve(quiz);
+              err ? reject({success:false, message: err.message})
+                  : resolve({success:true, data: quiz});
             });
     });
 });
@@ -38,8 +38,8 @@ quizSchema.static("createQuiz", (quiz:Object):Promise<any> => {
       var _quiz = new Quiz(quiz);
 
       _quiz.save((err, saved) => {
-        err ? reject(err)
-            : resolve(saved);
+        err ? reject({success:false, message: err.message})
+            : resolve({success:true, data: saved});
       });
     });
 });
@@ -52,8 +52,57 @@ quizSchema.static("deleteQuiz", (id:string):Promise<any> => {
 
         Quiz.findByIdAndRemove(id)
             .exec((err, deleted) => {
-              err ? reject(err)
-                  : resolve();
+              err ? reject({success:false, message: err.message})
+                  : resolve({success:true, data: {message:"Deleted success"}});
+            });
+    });
+});
+
+quizSchema.static("addQuestion", (id:string, question:Object):Promise<any> => {
+    return new Promise((resolve:Function, reject:Function) => {
+        if (!_.isObject(question)) {
+            return reject(new TypeError("User is not a valid object."));
+        }        
+        let body:any = question;
+        let updatePushObj = {$push: {}};        
+        updatePushObj.$push['question'] = ({'name': body.name, 'type': body.type, 'select_options': body.select_options});
+
+        Quiz.findByIdAndUpdate(id, updatePushObj)
+            .exec((err, quiz) => {
+                if (err) {
+                    reject({success:false, message: err.message});
+                }
+                else {
+                    Quiz.findById(id)
+                        .exec((err, quiz) => {
+                        err ? reject({success:false, message: err.message})
+                            : resolve({success:true, data: quiz});
+                        });
+                }
+            });
+    });
+});
+
+quizSchema.static("editQuestion", (id:string, id_question:string, question:Object):Promise<any> => {
+    return new Promise((resolve:Function, reject:Function) => {
+        if (!_.isObject(question)) {
+            return reject(new TypeError("User is not a valid object."));
+        }        
+        
+        let ObjectID = mongoose.Types.ObjectId;  
+        let body:any = question;
+        
+        Quiz.update({'_id':id, 'question':{$elemMatch: {'_id': new ObjectID(id_question)}}}, {
+            $set: {
+                'question.$.name':body.name,
+                'question.$.type':body.type,
+                'question.$.select_options': body.select_option
+            }
+        })
+            .exec((err, quiz) => {
+                
+              err ? reject({success:false, message: err.message})
+                  : resolve({success:true, data: quiz});
             });
     });
 });
