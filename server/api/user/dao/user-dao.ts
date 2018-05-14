@@ -44,7 +44,7 @@ userSchema.static("me", (userId: string):Promise<any> => {
     });
 });
 
-userSchema.static("createUser", (user:Object):Promise<any> => {
+userSchema.static("register", (user:Object):Promise<any> => {
     return new Promise((resolve:Function, reject:Function) => {
       if (!_.isObject(user)) {
         return reject(new TypeError("User is not a valid object."));
@@ -97,6 +97,65 @@ userSchema.static("deleteUser", (id:string):Promise<any> => {
     });
 });
 
+userSchema.static("updateUser", (id:string, user:Object):Promise<any> => {
+    return new Promise((resolve:Function, reject:Function) => {
+        if (!_.isObject(user)) {
+            return reject(new TypeError("User is not a valid object."));
+        }        
+
+        User.findByIdAndUpdate(id, user)
+            .exec((err, user) => {
+                
+              err ? reject({success:false, message: err.message})
+                  : resolve({success:true, data: user});
+            });
+    });
+});
+
+userSchema.static("addUserEducation", (id:string, user:Object):Promise<any> => {
+    return new Promise((resolve:Function, reject:Function) => {
+        if (!_.isObject(user)) {
+            return reject(new TypeError("User is not a valid object."));
+        }        
+        let body:any = user;
+        let updatePushObj = {$push: {}};
+        console.log()
+        
+        updatePushObj.$push['education'] = ({'type': body.type, 'school_name': body.school_name});
+
+        User.findByIdAndUpdate(id, updatePushObj)
+            .exec((err, user) => {
+                
+              err ? reject({success:false, message: err.message})
+                  : resolve({success:true, data: user});
+            });
+    });
+});
+
+userSchema.static("editUserEducation", (id:string, id_education:string, user:Object):Promise<any> => {
+    return new Promise((resolve:Function, reject:Function) => {
+        if (!_.isObject(user)) {
+            return reject(new TypeError("User is not a valid object."));
+        }        
+        
+        let ObjectID = mongoose.Types.ObjectId;  
+        let body:any = user;
+        
+        User.update({'_id':id, 'education':{$elemMatch: {'_id': new ObjectID(id_education)}}}, {
+            $set: {
+                'education.$' : {
+                    'type':body.type,
+                    'school_name':body.school_name  
+                }
+            }
+        })
+            .exec((err, user) => {
+                
+              err ? reject({success:false, message: err.message})
+                  : resolve({success:true, data: user});
+            });
+    });
+});
+
 let User = mongoose.model("User", userSchema);
-  
 export default User;

@@ -7,9 +7,12 @@ var UserRoutes = /** @class */ (function () {
     }
     UserRoutes.init = function (router) {
         router
+            .route("/api/register")
+            .post(user_controller_1.UserController.register);
+        router
             .route("/api/users")
             .get(user_controller_1.UserController.getAll)
-            .post(user_controller_1.UserController.createUser);
+            .put(auth.isAuthenticated(), user_controller_1.UserController.updateUser);
         router
             .route("/api/users/:id")
             .delete(user_controller_1.UserController.deleteUser);
@@ -19,6 +22,12 @@ var UserRoutes = /** @class */ (function () {
         router
             .route("/api/me")
             .get(auth.isAuthenticated(), user_controller_1.UserController.me);
+        router
+            .route("/api/user/education/add")
+            .post(auth.isAuthenticated(), user_controller_1.UserController.addUserEducation);
+        router
+            .route("/api/user/education/edit/:id_education")
+            .post(auth.isAuthenticated(), user_controller_1.UserController.editUserEducation);
     };
     return UserRoutes;
 }());

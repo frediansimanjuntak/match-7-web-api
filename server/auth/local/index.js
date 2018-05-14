@@ -27,7 +27,7 @@ router.post('/', function (req, res, next) {
                 remember = "true";
             }
             var token = auth_service_1.signToken(user._id);
-            res.json({ success: true, token: token });
+            res.json({ success: true, data: { token: token } });
         }
         else {
             res.json({ message: 'please login first.' });

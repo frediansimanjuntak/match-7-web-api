@@ -39,7 +39,7 @@ user_model_1.default.static("me", function (userId) {
         });
     });
 });
-user_model_1.default.static("createUser", function (user) {
+user_model_1.default.static("register", function (user) {
     return new Promise(function (resolve, reject) {
         if (!_.isObject(user)) {
             return reject(new TypeError("User is not a valid object."));
@@ -85,6 +85,55 @@ user_model_1.default.static("deleteUser", function (id) {
             .exec(function (err, deleted) {
             err ? reject({ success: false, message: err.message })
                 : resolve({ success: true, data: { message: "Deleted success" } });
+        });
+    });
+});
+user_model_1.default.static("updateUser", function (id, user) {
+    return new Promise(function (resolve, reject) {
+        if (!_.isObject(user)) {
+            return reject(new TypeError("User is not a valid object."));
+        }
+        User.findByIdAndUpdate(id, user)
+            .exec(function (err, user) {
+            err ? reject({ success: false, message: err.message })
+                : resolve({ success: true, data: user });
+        });
+    });
+});
+user_model_1.default.static("addUserEducation", function (id, user) {
+    return new Promise(function (resolve, reject) {
+        if (!_.isObject(user)) {
+            return reject(new TypeError("User is not a valid object."));
+        }
+        var body = user;
+        var updatePushObj = { $push: {} };
+        console.log();
+        updatePushObj.$push['education'] = ({ 'type': body.type, 'school_name': body.school_name });
+        User.findByIdAndUpdate(id, updatePushObj)
+            .exec(function (err, user) {
+            err ? reject({ success: false, message: err.message })
+                : resolve({ success: true, data: user });
+        });
+    });
+});
+user_model_1.default.static("editUserEducation", function (id, id_education, user) {
+    return new Promise(function (resolve, reject) {
+        if (!_.isObject(user)) {
+            return reject(new TypeError("User is not a valid object."));
+        }
+        var ObjectID = mongoose.Types.ObjectId;
+        var body = user;
+        User.update({ '_id': id, 'education': { $elemMatch: { '_id': new ObjectID(id_education) } } }, {
+            $set: {
+                'education.$': {
+                    'type': body.type,
+                    'school_name': body.school_name
+                }
+            }
+        })
+            .exec(function (err, user) {
+            err ? reject({ success: false, message: err.message })
+                : resolve({ success: true, data: user });
         });
     });
 });

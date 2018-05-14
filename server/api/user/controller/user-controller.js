@@ -21,21 +21,43 @@ var UserController = /** @class */ (function () {
             .then(function (user) { return res.status(200).json(user); })
             .catch(function (error) { return res.status(400).json(error); });
     };
+    UserController.updateUser = function (req, res) {
+        var _userId = req["user"]._id;
+        var _user = req.body;
+        user_dao_1.default["updateUser"](_userId, _user)
+            .then(function (user) { return res.status(200).json(user); })
+            .catch(function (error) { return res.status(400).json(error); });
+    };
     UserController.activateUser = function (req, res) {
         var _user = req.body;
         user_dao_1.default["activateUser"](_user)
             .then(function (user) { return res.status(200).json(user); })
             .catch(function (error) { return res.status(400).json(error); });
     };
-    UserController.createUser = function (req, res) {
+    UserController.register = function (req, res) {
         var _user = req.body;
-        user_dao_1.default["createUser"](_user)
+        user_dao_1.default["register"](_user)
             .then(function (user) { return res.status(201).json(user); })
             .catch(function (error) { return res.status(400).json(error); });
     };
     UserController.deleteUser = function (req, res) {
         var _id = req.params.id;
         user_dao_1.default["deleteUser"](_id)
+            .then(function (user) { return res.status(200).end(user); })
+            .catch(function (error) { return res.status(400).json(error); });
+    };
+    UserController.addUserEducation = function (req, res) {
+        var _userId = req["user"]._id;
+        var _user = req.body;
+        user_dao_1.default["addUserEducation"](_userId, _user)
+            .then(function (user) { return res.status(200).end(user); })
+            .catch(function (error) { return res.status(400).json(error); });
+    };
+    UserController.editUserEducation = function (req, res) {
+        var _userId = req["user"]._id;
+        var _idEducation = req.params.id_education;
+        var _user = req.body;
+        user_dao_1.default["editUserEducation"](_userId, _idEducation, _user)
             .then(function (user) { return res.status(200).end(user); })
             .catch(function (error) { return res.status(400).json(error); });
     };
