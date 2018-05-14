@@ -11,6 +11,7 @@ var InterestRoutes = /** @class */ (function () {
             .post(interest_controller_1.InterestController.createInterest);
         router
             .route("/api/interest/:id")
+            .put(interest_controller_1.InterestController.updateInterest)
             .delete(interest_controller_1.InterestController.deleteInterest);
     };
     return InterestRoutes;

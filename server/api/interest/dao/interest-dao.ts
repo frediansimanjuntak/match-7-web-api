@@ -9,8 +9,8 @@ interestSchema.static("getAll", ():Promise<any> => {
 
         Interest.find(_query)
             .exec((err, interests) => {
-              err ? reject(err)
-                  : resolve(interests);
+              err ? reject({success:false, message: err.message})
+                  : resolve({success:true, data: interests});
             });
     });
 });
@@ -23,8 +23,8 @@ interestSchema.static("getById", (id: string):Promise<any> => {
 
         Interest.findById(id)
             .exec((err, interest) => {
-              err ? reject(err)
-                  : resolve(interest);
+              err ? reject({success:false, message: err.message})
+                  : resolve({success:true, data: interest});
             });
     });
 });
@@ -38,9 +38,24 @@ interestSchema.static("createInterest", (interest:Object):Promise<any> => {
       var _interest = new Interest(interest);
 
       _interest.save((err, saved) => {
-        err ? reject(err)
-            : resolve(saved);
+        err ? reject({success:false, message: err.message})
+            : resolve({success:true, data: saved});
       });
+    });
+});
+
+interestSchema.static("updateInterest", (id:string, interest:Object):Promise<any> => {
+    return new Promise((resolve:Function, reject:Function) => {
+        if (!_.isObject(interest)) {
+            return reject(new TypeError("interest is not a valid object."));
+        }        
+
+        Interest.findByIdAndUpdate(id, interest)
+            .exec((err, interest) => {
+                
+              err ? reject({success:false, message: err.message})
+                  : resolve({success:true, data: interest});
+            });
     });
 });
 
@@ -52,8 +67,8 @@ interestSchema.static("deleteInterest", (id:string):Promise<any> => {
 
         Interest.findByIdAndRemove(id)
             .exec((err, deleted) => {
-              err ? reject(err)
-                  : resolve();
+              err ? reject({success:false, message: err.message})
+                  : resolve({success:true, data: {message:"Deleted success"}});
             });
     });
 });

@@ -12,6 +12,7 @@ export class InterestRoutes {
 
       router
         .route("/api/interest/:id")
+        .put(InterestController.updateInterest)
         .delete(InterestController.deleteInterest);
     }
 }

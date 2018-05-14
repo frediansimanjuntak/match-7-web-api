@@ -9,8 +9,8 @@ interest_model_1.default.static("getAll", function () {
         var _query = {};
         Interest.find(_query)
             .exec(function (err, interests) {
-            err ? reject(err)
-                : resolve(interests);
+            err ? reject({ success: false, message: err.message })
+                : resolve({ success: true, data: interests });
         });
     });
 });
@@ -21,8 +21,8 @@ interest_model_1.default.static("getById", function (id) {
         }
         Interest.findById(id)
             .exec(function (err, interest) {
-            err ? reject(err)
-                : resolve(interest);
+            err ? reject({ success: false, message: err.message })
+                : resolve({ success: true, data: interest });
         });
     });
 });
@@ -33,8 +33,20 @@ interest_model_1.default.static("createInterest", function (interest) {
         }
         var _interest = new Interest(interest);
         _interest.save(function (err, saved) {
-            err ? reject(err)
-                : resolve(saved);
+            err ? reject({ success: false, message: err.message })
+                : resolve({ success: true, data: saved });
+        });
+    });
+});
+interest_model_1.default.static("updateInterest", function (id, interest) {
+    return new Promise(function (resolve, reject) {
+        if (!_.isObject(interest)) {
+            return reject(new TypeError("interest is not a valid object."));
+        }
+        Interest.findByIdAndUpdate(id, interest)
+            .exec(function (err, interest) {
+            err ? reject({ success: false, message: err.message })
+                : resolve({ success: true, data: interest });
         });
     });
 });
@@ -45,8 +57,8 @@ interest_model_1.default.static("deleteInterest", function (id) {
         }
         Interest.findByIdAndRemove(id)
             .exec(function (err, deleted) {
-            err ? reject(err)
-                : resolve();
+            err ? reject({ success: false, message: err.message })
+                : resolve({ success: true, data: { message: "Deleted success" } });
         });
     });
 });

@@ -20,10 +20,17 @@ var InterestController = /** @class */ (function () {
             .then(function (interest) { return res.status(201).json(interest); })
             .catch(function (error) { return res.status(400).json(error); });
     };
+    InterestController.updateInterest = function (req, res) {
+        var _id = req.params.id;
+        var _interest = req.body;
+        interest_dao_1.default["updateInterest"](_id, _interest)
+            .then(function (interest) { return res.status(200).json(interest); })
+            .catch(function (error) { return res.status(400).json(error); });
+    };
     InterestController.deleteInterest = function (req, res) {
         var _id = req.params.id;
         interest_dao_1.default["deleteInterest"](_id)
-            .then(function () { return res.status(200).end(); })
+            .then(function (interest) { return res.status(200).json(interest); })
             .catch(function (error) { return res.status(400).json(error); });
     };
     return InterestController;

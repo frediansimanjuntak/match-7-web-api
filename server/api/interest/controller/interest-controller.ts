@@ -25,12 +25,22 @@ export class InterestController {
         .catch(error => res.status(400).json(error));
   }
 
+  static updateInterest(req: express.Request, res: express.Response):void {
+    let _id = req.params.id;
+    let _interest = req.body;
+
+    InterestDAO
+        ["updateInterest"](_id, _interest)
+        .then(interest => res.status(200).json(interest))
+        .catch(error => res.status(400).json(error));
+  }
+
   static deleteInterest(req: express.Request, res: express.Response): void {
     let _id = req.params.id;
 
     InterestDAO
       ["deleteInterest"](_id)
-      .then(() => res.status(200).end())
+      .then((interest) => res.status(200).json(interest))
       .catch(error => res.status(400).json(error));
   }
 }
