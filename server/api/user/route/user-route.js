@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var user_controller_1 = require("../controller/user-controller");
+var auth = require("../../../auth/auth-service");
 var UserRoutes = /** @class */ (function () {
     function UserRoutes() {
     }
@@ -15,6 +16,9 @@ var UserRoutes = /** @class */ (function () {
         router
             .route("/api/users/activation")
             .post(user_controller_1.UserController.activateUser);
+        router
+            .route("/api/me")
+            .get(auth.isAuthenticated(), user_controller_1.UserController.me);
     };
     return UserRoutes;
 }());

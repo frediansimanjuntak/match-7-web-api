@@ -10,8 +10,8 @@ userSchema.static("getAll", ():Promise<any> => {
 
         User.find(_query)
             .exec((err, users) => {
-              err ? reject(err)
-                  : resolve(users);
+              err ? reject({success:false, message: err.message})
+                  : resolve({success:true, data: users});
             });
     });
 });
@@ -24,8 +24,22 @@ userSchema.static("getById", (id: string):Promise<any> => {
 
         User.findById(id)
             .exec((err, user) => {
-              err ? reject(err)
-                  : resolve(user);
+                err ? reject({success:false, message: err.message})
+                    : resolve({success:true, data: user});
+            });
+    });
+});
+
+userSchema.static("me", (userId: string):Promise<any> => {
+    return new Promise((resolve:Function, reject:Function) => {
+        if (!userId) {
+          return reject(new TypeError("User is not a valid."));
+        }
+
+        User.findById(userId)
+            .exec((err, user) => {
+                err ? reject({success:false, message: err.message})
+                    : resolve({success:true, data: user});
             });
     });
 });
@@ -40,10 +54,10 @@ userSchema.static("createUser", (user:Object):Promise<any> => {
         _user.verification.code = randomCode;
         _user.verification.verified.type = "email";
         _user.save((err, saved) => {
-            if (err) reject(err);
+            if (err) reject({success:false, message: err.message});
             else if (saved) {
                 email.signUp(saved);
-                resolve(saved);
+                resolve({success:true, data: saved});
             }
         });
     });
@@ -63,8 +77,8 @@ userSchema.static("activateUser", (user:Object):Promise<any> => {
         }})
             .exec((err, user) => {
                 
-              err ? reject(err)
-                  : resolve(user);
+              err ? reject({success:false, message: err.message})
+                  : resolve({success:true, data: user});
             });
     });
 });
@@ -77,8 +91,8 @@ userSchema.static("deleteUser", (id:string):Promise<any> => {
 
         User.findByIdAndRemove(id)
             .exec((err, deleted) => {
-              err ? reject(err)
-                  : resolve();
+              err ? reject({success:false, message: err.message})
+                  : resolve({success:true, data: {message:"Deleted success"}});
             });
     });
 });

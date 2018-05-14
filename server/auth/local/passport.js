@@ -6,10 +6,11 @@ var LocalUserStrategy = passportLocal.Strategy;
 function localAuthenticate(User, username, password, done) {
     User.findOne({
         $or: [
-            { username: username.toLowerCase() },
-            { email: username.toLowerCase() }
+            { 'username': username.toLowerCase() },
+            { 'email': username.toLowerCase() }
         ],
-        disabled: false
+        'disabled': false,
+        'verification.verified.status': true
     })
         .select('+password')
         .exec()

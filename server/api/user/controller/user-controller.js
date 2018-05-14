@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var user_dao_1 = require("../dao/user-dao");
+var passport = require('passport');
 var UserController = /** @class */ (function () {
     function UserController() {
     }
@@ -11,6 +12,12 @@ var UserController = /** @class */ (function () {
     };
     UserController.getById = function (req, res) {
         user_dao_1.default["getById"](req.params.id)
+            .then(function (user) { return res.status(200).json(user); })
+            .catch(function (error) { return res.status(400).json(error); });
+    };
+    UserController.me = function (req, res) {
+        var _userId = req["user"]._id;
+        user_dao_1.default["me"](_userId)
             .then(function (user) { return res.status(200).json(user); })
             .catch(function (error) { return res.status(400).json(error); });
     };
@@ -29,7 +36,7 @@ var UserController = /** @class */ (function () {
     UserController.deleteUser = function (req, res) {
         var _id = req.params.id;
         user_dao_1.default["deleteUser"](_id)
-            .then(function () { return res.status(200).end(); })
+            .then(function (user) { return res.status(200).end(user); })
             .catch(function (error) { return res.status(400).json(error); });
     };
     return UserController;

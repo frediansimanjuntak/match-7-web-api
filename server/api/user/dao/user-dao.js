@@ -10,8 +10,8 @@ user_model_1.default.static("getAll", function () {
         var _query = {};
         User.find(_query)
             .exec(function (err, users) {
-            err ? reject(err)
-                : resolve(users);
+            err ? reject({ success: false, message: err.message })
+                : resolve({ success: true, data: users });
         });
     });
 });
@@ -22,8 +22,20 @@ user_model_1.default.static("getById", function (id) {
         }
         User.findById(id)
             .exec(function (err, user) {
-            err ? reject(err)
-                : resolve(user);
+            err ? reject({ success: false, message: err.message })
+                : resolve({ success: true, data: user });
+        });
+    });
+});
+user_model_1.default.static("me", function (userId) {
+    return new Promise(function (resolve, reject) {
+        if (!userId) {
+            return reject(new TypeError("User is not a valid."));
+        }
+        User.findById(userId)
+            .exec(function (err, user) {
+            err ? reject({ success: false, message: err.message })
+                : resolve({ success: true, data: user });
         });
     });
 });
@@ -38,10 +50,10 @@ user_model_1.default.static("createUser", function (user) {
         _user.verification.verified.type = "email";
         _user.save(function (err, saved) {
             if (err)
-                reject(err);
+                reject({ success: false, message: err.message });
             else if (saved) {
                 email_1.email.signUp(saved);
-                resolve(saved);
+                resolve({ success: true, data: saved });
             }
         });
     });
@@ -59,8 +71,8 @@ user_model_1.default.static("activateUser", function (user) {
                 'verification.verified.status': true
             } })
             .exec(function (err, user) {
-            err ? reject(err)
-                : resolve(user);
+            err ? reject({ success: false, message: err.message })
+                : resolve({ success: true, data: user });
         });
     });
 });
@@ -71,8 +83,8 @@ user_model_1.default.static("deleteUser", function (id) {
         }
         User.findByIdAndRemove(id)
             .exec(function (err, deleted) {
-            err ? reject(err)
-                : resolve();
+            err ? reject({ success: false, message: err.message })
+                : resolve({ success: true, data: { message: "Deleted success" } });
         });
     });
 });
