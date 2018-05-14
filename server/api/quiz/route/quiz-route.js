@@ -12,6 +12,7 @@ var QuizRoutes = /** @class */ (function () {
         router
             .route("/api/quiz/:id")
             .get(quiz_controller_1.QuizController.getById)
+            .put(quiz_controller_1.QuizController.updateQuiz)
             .delete(quiz_controller_1.QuizController.deleteQuiz);
         router
             .route("/api/quiz/question/add/:id")

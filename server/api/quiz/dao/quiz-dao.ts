@@ -44,6 +44,20 @@ quizSchema.static("createQuiz", (quiz:Object):Promise<any> => {
     });
 });
 
+quizSchema.static("updateQuiz", (id:string, quiz:Object):Promise<any> => {
+    return new Promise((resolve:Function, reject:Function) => {
+        if (!_.isObject(quiz)) {
+            return reject(new TypeError("quiz is not a valid object."));
+        }        
+
+        Quiz.findByIdAndUpdate(id, quiz)
+            .exec((err, quiz) => {                
+              err ? reject({success:false, message: err.message})
+                  : resolve({success:true, data: quiz});
+            });
+    });
+});
+
 quizSchema.static("deleteQuiz", (id:string):Promise<any> => {
     return new Promise((resolve:Function, reject:Function) => {
         if (!_.isString(id)) {

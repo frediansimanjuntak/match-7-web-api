@@ -13,6 +13,7 @@ export class QuizRoutes {
       router
         .route("/api/quiz/:id")
         .get(QuizController.getById)
+        .put(QuizController.updateQuiz)
         .delete(QuizController.deleteQuiz);
       
       router

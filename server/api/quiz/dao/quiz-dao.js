@@ -38,6 +38,18 @@ quiz_model_1.default.static("createQuiz", function (quiz) {
         });
     });
 });
+quiz_model_1.default.static("updateQuiz", function (id, quiz) {
+    return new Promise(function (resolve, reject) {
+        if (!_.isObject(quiz)) {
+            return reject(new TypeError("quiz is not a valid object."));
+        }
+        Quiz.findByIdAndUpdate(id, quiz)
+            .exec(function (err, quiz) {
+            err ? reject({ success: false, message: err.message })
+                : resolve({ success: true, data: quiz });
+        });
+    });
+});
 quiz_model_1.default.static("deleteQuiz", function (id) {
     return new Promise(function (resolve, reject) {
         if (!_.isString(id)) {

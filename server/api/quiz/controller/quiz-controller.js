@@ -20,6 +20,13 @@ var QuizController = /** @class */ (function () {
             .then(function (quiz) { return res.status(201).json(quiz); })
             .catch(function (error) { return res.status(400).json(error); });
     };
+    QuizController.updateQuiz = function (req, res) {
+        var _id = req.params.id;
+        var _quiz = req.body;
+        quiz_dao_1.default["updateQuiz"](_id, _quiz)
+            .then(function (quiz) { return res.status(200).json(quiz); })
+            .catch(function (error) { return res.status(400).json(error); });
+    };
     QuizController.deleteQuiz = function (req, res) {
         var _id = req.params.id;
         quiz_dao_1.default["deleteQuiz"](_id)

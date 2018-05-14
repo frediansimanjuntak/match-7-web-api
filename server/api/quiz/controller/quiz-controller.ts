@@ -24,6 +24,16 @@ export class QuizController {
         .then(quiz => res.status(201).json(quiz))
         .catch(error => res.status(400).json(error));
   }
+  
+  static updateQuiz(req: express.Request, res: express.Response):void {
+    let _id = req.params.id;
+    let _quiz = req.body;
+
+    QuizDAO
+        ["updateQuiz"](_id, _quiz)
+        .then(quiz => res.status(200).json(quiz))
+        .catch(error => res.status(400).json(error));
+  }
 
   static deleteQuiz(req: express.Request, res: express.Response): void {
     let _id = req.params.id;
