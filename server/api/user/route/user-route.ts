@@ -13,16 +13,16 @@ export class UserRoutes {
 
       router
         .route("/api/users")
-        .get(UserController.getAll)
-        .put(auth.isAuthenticated(),UserController.updateUser);
+        .get(auth.isAuthenticated(), UserController.getAll)
+        .put(auth.isAuthenticated(), UserController.updateUser);
 
       router
         .route("/api/users/:id")
-        .delete(UserController.deleteUser);      
+        .delete(auth.isAuthenticated(),UserController.deleteUser);      
       
       router
         .route("/api/users/activation")
-        .post(UserController.activateUser);
+        .post(auth.isAuthenticated(), UserController.activateUser);
       
       router
         .route("/api/me")

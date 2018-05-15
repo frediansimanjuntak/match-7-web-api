@@ -2,16 +2,17 @@
 
 import * as express from "express";
 import {UserQuizAnswerController} from "../controller/user_quiz_answer-controller";
+import * as auth from '../../../auth/auth-service';
 
-export class TodoRoutes {
+export class UserQuizAnswerRoutes {
     static init(router: express.Router) {
       router
         .route("/api/user/quiz/answer")
-        .get(UserQuizAnswerController.getAll)
-        .post(UserQuizAnswerController.createUserQuizAnswer);
+        .get(auth.isAuthenticated(), UserQuizAnswerController.getAll)
+        .post(auth.isAuthenticated(), UserQuizAnswerController.createUserQuizAnswer);
 
       router
         .route("/api/user/quiz/answer/:id")
-        .delete(UserQuizAnswerController.deleteUserQuizAnswer);
+        .delete(auth.isAuthenticated(), UserQuizAnswerController.deleteUserQuizAnswer);
     }
 }

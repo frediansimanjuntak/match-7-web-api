@@ -10,6 +10,8 @@ export class UserQuizAnswerController {
   }
 
   static getById(req: express.Request, res: express.Response):void {
+    let _userId = req["user"]._id;
+    
     UserQuizAnswerDAO
         ["getById"](req.params.id)
         .then(answer => res.status(200).json(answer))
@@ -18,6 +20,7 @@ export class UserQuizAnswerController {
 
   static createUserQuizAnswer(req: express.Request, res: express.Response):void {
       let _answer = req.body;
+      let _userId = req["user"]._id;
 
       UserQuizAnswerDAO
         ["createUserQuizAnswer"](_answer)
@@ -27,10 +30,11 @@ export class UserQuizAnswerController {
 
   static deleteUserQuizAnswer(req: express.Request, res: express.Response): void {
     let _id = req.params.id;
+    let _userId = req["user"]._id;
 
     UserQuizAnswerDAO
       ["deleteUserQuizAnswer"](_id)
-      .then(() => res.status(200).end())
+      .then((answer) => res.status(200).json(answer))
       .catch(error => res.status(400).json(error));
   }
 }

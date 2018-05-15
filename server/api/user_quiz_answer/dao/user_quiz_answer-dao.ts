@@ -9,8 +9,8 @@ userQuizAnswerSchema.static("getAll", ():Promise<any> => {
 
         Answer.find(_query)
             .exec((err, answers) => {
-              err ? reject(err)
-                  : resolve(answers);
+              err ? reject({success:false, message: err.message})
+                  : resolve({success:true, data: answers});
             });
     });
 });
@@ -23,8 +23,8 @@ userQuizAnswerSchema.static("getById", (id: string):Promise<any> => {
 
         Answer.findById(id)
             .exec((err, answer) => {
-              err ? reject(err)
-                  : resolve(answer);
+              err ? reject({success:false, message: err.message})
+                  : resolve({success:true, data: answer});
             });
     });
 });
@@ -38,8 +38,8 @@ userQuizAnswerSchema.static("createUserQuizAnswer", (answer:Object):Promise<any>
       var _answer = new Answer(answer);
 
       _answer.save((err, saved) => {
-        err ? reject(err)
-            : resolve(saved);
+        err ? reject({success:false, message: err.message})
+            : resolve({success:true, data: saved});
       });
     });
 });
@@ -52,8 +52,8 @@ userQuizAnswerSchema.static("deleteUserQuizAnswer", (id:string):Promise<any> => 
 
         Answer.findByIdAndRemove(id)
             .exec((err, deleted) => {
-              err ? reject(err)
-                  : resolve();
+              err ? reject({success:false, message: err.message})
+                  : resolve({success:true, data: {message:"Deleted success"}});
             });
     });
 });
