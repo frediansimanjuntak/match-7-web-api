@@ -2,7 +2,7 @@ import * as mongoose from "mongoose";
 import * as Promise from "bluebird";
 import * as _ from "lodash";
 import questionSchema from "../model/question-model";
-import Quiz from '../../quiz/dao/quiz-dao'
+import Quiz from '../../quiz/dao/quiz-dao';
 
 questionSchema.static("getAll", ():Promise<any> => {
     return new Promise((resolve:Function, reject:Function) => {

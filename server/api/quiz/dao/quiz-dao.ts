@@ -49,11 +49,12 @@ quizSchema.static("updateQuiz", (id:string, quiz:Object):Promise<any> => {
         if (!_.isObject(quiz)) {
             return reject(new TypeError("quiz is not a valid object."));
         }        
-
-        Quiz.findByIdAndUpdate(id, quiz)
+        Quiz.update({'_id':id}, {
+            $set: quiz
+        })
             .exec((err, quiz) => {                
               err ? reject({success:false, message: err.message})
-                  : resolve({success:true, data: quiz});
+                  : resolve({success:true, data: "Updated success"});
             });
     });
 });

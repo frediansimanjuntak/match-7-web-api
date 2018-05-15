@@ -4,15 +4,15 @@ const Schema = mongoose.Schema;
 let schema = new mongoose.Schema({
     user_id: {
         type: Schema.Types.ObjectId,
-        ref: 'users'
+        ref: 'User'
     },
-    quiz_id: {
+    quiz: {
         type: Schema.Types.ObjectId,
-        ref: 'quiz'
+        ref: 'Quiz'
     },
-    question_id: {
+    question: {
         type: Schema.Types.ObjectId,
-        ref: 'question'
+        ref: 'Question'
     },
     answer: {type: String, required: true, trim: true},
     created_at: {type: Date, default: Date.now},
