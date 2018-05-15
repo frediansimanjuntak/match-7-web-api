@@ -8,3 +8,4 @@ dist
 *.log
 *.log.*
 *.cfg
+.package-lock.json
