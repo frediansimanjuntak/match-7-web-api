@@ -42,26 +42,5 @@ export class QuizController {
       ["deleteQuiz"](_id)
       .then((quiz) => res.status(200).json(quiz))
       .catch(error => res.status(400).json(error));
-  }
-  
-  static addQuestion(req: express.Request, res: express.Response): void {
-    let _id = req.params.id;
-    let _quiz = req.body;
-
-    QuizDAO
-        ["addQuestion"](_id, _quiz)
-        .then((quiz) => res.status(200).json(quiz))
-        .catch(error => res.status(400).json(error));
-  }
-
-  static editQuestion(req: express.Request, res: express.Response): void {
-    let _id = req.params.id;
-    let _idQuestion = req.params.id_question;
-    let _quiz = req.body;
-
-    QuizDAO
-        ["editQuestion"](_id, _idQuestion, _quiz)
-        .then((quiz) => res.status(200).json(quiz))
-        .catch(error => res.status(400).json(error));
-  }
+  }  
 }

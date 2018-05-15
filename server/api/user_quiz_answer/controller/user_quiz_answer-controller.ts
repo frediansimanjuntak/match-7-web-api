@@ -23,17 +23,28 @@ export class UserQuizAnswerController {
       let _userId = req["user"]._id;
 
       UserQuizAnswerDAO
-        ["createUserQuizAnswer"](_answer)
+        ["createUserQuizAnswer"](_answer, _userId)
         .then(answer => res.status(201).json(answer))
         .catch(error => res.status(400).json(error));
   }
+
+  static updateUserQuizAnswer(req: express.Request, res: express.Response):void {
+    let _answer = req.body;
+    let _userId = req["user"]._id;
+    let _id = req.params.id;
+
+    UserQuizAnswerDAO
+      ["updateUserQuizAnswer"](_id, _userId, _answer)
+      .then(answer => res.status(201).json(answer))
+      .catch(error => res.status(400).json(error));
+}
 
   static deleteUserQuizAnswer(req: express.Request, res: express.Response): void {
     let _id = req.params.id;
     let _userId = req["user"]._id;
 
     UserQuizAnswerDAO
-      ["deleteUserQuizAnswer"](_id)
+      ["deleteUserQuizAnswer"](_id, _userId)
       .then((answer) => res.status(200).json(answer))
       .catch(error => res.status(400).json(error));
   }

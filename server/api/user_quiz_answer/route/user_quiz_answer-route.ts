@@ -13,6 +13,7 @@ export class UserQuizAnswerRoutes {
 
       router
         .route("/api/user/quiz/answer/:id")
+        .put(auth.isAuthenticated(), UserQuizAnswerController.updateUserQuizAnswer)
         .delete(auth.isAuthenticated(), UserQuizAnswerController.deleteUserQuizAnswer);
     }
 }

@@ -29,13 +29,14 @@ userQuizAnswerSchema.static("getById", (id: string):Promise<any> => {
     });
 });
 
-userQuizAnswerSchema.static("createUserQuizAnswer", (answer:Object):Promise<any> => {
+userQuizAnswerSchema.static("createUserQuizAnswer", (answer:Object, userId: string):Promise<any> => {
     return new Promise((resolve:Function, reject:Function) => {
       if (!_.isObject(answer)) {
         return reject(new TypeError("Todo is not a valid object."));
-      }
-
-      var _answer = new Answer(answer);
+      }      
+      let body:any = answer;
+      body['user_id'] = userId;
+      var _answer = new Answer(body);
 
       _answer.save((err, saved) => {
         err ? reject({success:false, message: err.message})
@@ -44,13 +45,28 @@ userQuizAnswerSchema.static("createUserQuizAnswer", (answer:Object):Promise<any>
     });
 });
 
-userQuizAnswerSchema.static("deleteUserQuizAnswer", (id:string):Promise<any> => {
+
+userQuizAnswerSchema.static("updateUserQuizAnswer", (id:string, userId: string, answer:Object):Promise<any> => {
+    return new Promise((resolve:Function, reject:Function) => {
+        if (!_.isObject(answer)) {
+            return reject(new TypeError("quiz is not a valid object."));
+        }        
+
+        Answer.findOneAndUpdate({'_id':id, 'user_id':userId}, answer)
+            .exec((err, answer) => {                
+              err ? reject({success:false, message: err.message})
+                  : resolve({success:true, data: answer});
+            });
+    });
+});
+
+userQuizAnswerSchema.static("deleteUserQuizAnswer", (id:string, userId: string):Promise<any> => {
     return new Promise((resolve:Function, reject:Function) => {
         if (!_.isString(id)) {
             return reject(new TypeError("Id is not a valid string."));
         }
 
-        Answer.findByIdAndRemove(id)
+        Answer.findByIdAndRemove({'_id':id, 'user_id':userId})
             .exec((err, deleted) => {
               err ? reject({success:false, message: err.message})
                   : resolve({success:true, data: {message:"Deleted success"}});

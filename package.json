@@ -1,11 +1,11 @@
 {
   "name": "interest-matching-app",
   "version": "0.0.1",
-  "main": "dist/server",
+  "main": "src/match-7.js",
   "scripts": {
-    "start": "node dist/server",
+    "start": "tsc && node index",
     "watch": "gulp",
-    "dev": "tsc && concurrently \"nodemon dist/server --watch dist\" \"gulp\"",
+    "dev": "tsc && concurrently \"nodemon index --watch server\" \"gulp\"",
     "build-dev": "node index && gulp client.watch",
     "build-dist": "gulp client.build:dist",
     "test-client": "gulp client.unit_test",
@@ -21,7 +21,7 @@
     "ignore": [
       "server/**/*.spec.ts"
     ],
-    "exec": "tsc && node dist/server"
+    "exec": "tsc && node index"
   },
   "dependencies": {
     "@types/node": "^10.0.8",

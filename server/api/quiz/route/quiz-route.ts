@@ -16,13 +16,5 @@ export class QuizRoutes {
         .get(auth.isAuthenticated(), QuizController.getById)
         .put(auth.isAuthenticated(), QuizController.updateQuiz)
         .delete(auth.isAuthenticated(), QuizController.deleteQuiz);
-      
-      router
-        .route("/api/quiz/question/add/:id")
-        .post(auth.isAuthenticated(), QuizController.addQuestion);
-      
-      router
-        .route("/api/quiz/question/update/:id/:id_question")
-        .post(auth.isAuthenticated(), QuizController.editQuestion);
     }
 }
