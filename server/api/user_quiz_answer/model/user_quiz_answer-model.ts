@@ -2,7 +2,7 @@ import * as mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
 let schema = new mongoose.Schema({
-    user_id: {
+    user: {
         type: Schema.Types.ObjectId,
         ref: 'User'
     },

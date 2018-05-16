@@ -3,6 +3,7 @@ import {UserRoutes} from "../api/user/route/user-route";
 import {QuizRoutes} from "../api/quiz/route/quiz-route";
 import {QuestionRoutes} from "../api/question/route/question-route";
 import {InterestRoutes} from "../api/interest/route/interest-route";
+import {UserQuizAnswerRoutes} from "../api/user_quiz_answer/route/user_quiz_answer-route";
 
 
 export class Routes {
@@ -11,6 +12,7 @@ export class Routes {
      QuizRoutes.init(router);
      QuestionRoutes.init(router);
      InterestRoutes.init(router);
+     UserQuizAnswerRoutes.init(router);
 
     
      app.use('/auth', require('../auth').default);

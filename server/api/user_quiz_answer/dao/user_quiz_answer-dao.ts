@@ -40,7 +40,7 @@ userQuizAnswerSchema.static("createUserQuizAnswer", (answer:Object, userId: stri
         return reject(new TypeError("Todo is not a valid object."));
       }      
       let body:any = answer;
-      body['user_id'] = userId;
+      body['user'] = userId;
       var _answer = new UserQuizAnswer(body);
 
       _answer.save((err, saved) => {
@@ -57,7 +57,7 @@ userQuizAnswerSchema.static("updateUserQuizAnswer", (id:string, userId: string, 
             return reject(new TypeError("quiz is not a valid object."));
         }        
 
-        UserQuizAnswer.findOneAndUpdate({'_id':id, 'user_id':userId}, answer)
+        UserQuizAnswer.findOneAndUpdate({'_id':id, 'user':userId}, answer)
             .exec((err, answer) => {                
               err ? reject({success:false, message: err.message})
                   : resolve({success:true, data: answer});
@@ -71,7 +71,7 @@ userQuizAnswerSchema.static("deleteUserQuizAnswer", (id:string, userId: string):
             return reject(new TypeError("Id is not a valid string."));
         }
 
-        UserQuizAnswer.findByIdAndRemove({'_id':id, 'user_id':userId})
+        UserQuizAnswer.findByIdAndRemove({'_id':id, 'user':userId})
             .exec((err, deleted) => {
               err ? reject({success:false, message: err.message})
                   : resolve({success:true, data: {message:"Deleted success"}});
