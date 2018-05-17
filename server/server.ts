@@ -17,6 +17,7 @@ import * as fs from "fs";
 import {RoutesConfig} from "./config/routes.conf";
 import {DBConfig} from "./config/db.conf";
 import {Routes} from "./routes/index";
+import * as multer from "multer";
 
 const app = express();
 
@@ -27,7 +28,7 @@ DBConfig.init();
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*")
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization")
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization, Cache-Control")
   res.header("Access-Control-Allow-Methods", "POST, GET, PUT, DELETE, OPTIONS")
   next()
 })
