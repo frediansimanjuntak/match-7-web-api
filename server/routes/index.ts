@@ -4,6 +4,7 @@ import {QuizRoutes} from "../api/quiz/route/quiz-route";
 import {QuestionRoutes} from "../api/question/route/question-route";
 import {InterestRoutes} from "../api/interest/route/interest-route";
 import {UserQuizAnswerRoutes} from "../api/user_quiz_answer/route/user_quiz_answer-route";
+import {AttachmentRoutes} from "../api/attachment/route/attachment-route";
 
 
 export class Routes {
@@ -13,6 +14,7 @@ export class Routes {
      QuestionRoutes.init(router);
      InterestRoutes.init(router);
      UserQuizAnswerRoutes.init(router);
+     AttachmentRoutes.init(router);
 
     
      app.use('/auth', require('../auth').default);

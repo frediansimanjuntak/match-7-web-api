@@ -36,10 +36,6 @@ let UsersSchema = new mongoose.Schema({
       job_title: {type: String, trim: true},
       company_name: {type: String, trim: true},
     }],
-    photo: [{
-      name: {type: String, trim: true},
-      url: {type: String, trim: true},
-    }],
     interest: [{
       type: Schema.Types.ObjectId,
 		  ref: 'Interests'	
