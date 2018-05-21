@@ -3,6 +3,7 @@ import * as Promise from "bluebird";
 import * as _ from "lodash";
 import userSchema from "../model/user-model";
 import {email} from '../../../global/func/email';
+import {google2fa} from '../../../global/func/google2fa';
 
 userSchema.static("getAll", ():Promise<any> => {
     return new Promise((resolve:Function, reject:Function) => {
@@ -151,6 +152,25 @@ userSchema.static("editUserEducation", (id:string, id_education:string, user:Obj
         })
             .exec((err, user) => {
                 
+              err ? reject({success:false, message: err.message})
+                  : resolve({success:true, data: user});
+            });
+    });
+});
+
+userSchema.static("enableUserGoogle2fa", (id:string):Promise<any> => {
+    return new Promise((resolve:Function, reject:Function) => {        
+        if (!_.isString(id)) {
+            return reject(new TypeError("Id is not a valid string."));
+        }
+        let google2fa_data = google2fa.createToken();
+        User.findOneAndUpdate({
+            '_id':id},{$set:{
+            'google2fa.disabled':true,
+            'google2fa.secret':google2fa_data['secret'],
+            'google2fa.barcode':google2fa_data['barcode'],
+        }})
+            .exec((err, user) => {                
               err ? reject({success:false, message: err.message})
                   : resolve({success:true, data: user});
             });

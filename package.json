@@ -58,9 +58,11 @@
     "nodemon": "^1.17.4",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
+    "qrcode": "^1.2.0",
     "serve-favicon": "^2.5.0",
     "sha256": "^0.2.0",
     "spdy": "^3.4.4",
+    "speakeasy": "^2.0.0",
     "typescript": "^2.4.1"
   },
   "devDependencies": {

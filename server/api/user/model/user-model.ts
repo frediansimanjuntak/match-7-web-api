@@ -25,6 +25,11 @@ let UsersSchema = new mongoose.Schema({
         status: {type: Boolean, default: false, trim: true}        
       }
     },
+    google2fa:{
+      disabled:{type: Boolean, default: false, trim: true},
+      secret:{type: String, trim: true},
+      barcode:{type: String, trim: true}
+    },
     disabled: {type: Boolean, default: false, trim: true},
     status: {type: String, trim: true},
     role: {type: String,  enum: ['user','admin'], trim: true},
