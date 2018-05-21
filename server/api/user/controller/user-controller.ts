@@ -100,4 +100,23 @@ export class UserController {
         .then((user) => res.status(200).json(user))
         .catch(error => res.status(400).json(error));
   }
+  
+  static changeLocation(req: express.Request, res: express.Response): void {
+    let _userId = req["user"]._id;
+    let _user = req.body;
+
+    UserDAO
+        ["changeLocation"](_userId, _user)
+        .then((user) => res.status(200).json(user))
+        .catch(error => res.status(400).json(error));
+  }
+
+  static changePassword(req: express.Request, res: express.Response): void {
+    let _user = req.body;
+
+    UserDAO
+        ["changePassword"](_user)
+        .then((user) => res.status(200).json(user))
+        .catch(error => res.status(400).json(error));
+  }
 }

@@ -26,8 +26,16 @@ export class UserRoutes {
       
       router
         .route("/api/users/activation")
-        .post(UserController.activateUser);
-                    
+        .post(UserController.activateUser);   
+              
+      router
+        .route("/api/users/change/password")
+        .put(UserController.changePassword);  
+      
+      router
+        .route("/api/users/change/location")
+        .put(auth.isAuthenticated(), UserController.changeLocation);
+
       router
         .route("/api/user/education/add")
         .post(auth.isAuthenticated(), UserController.addUserEducation);
