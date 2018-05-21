@@ -177,5 +177,21 @@ userSchema.static("enableUserGoogle2fa", (id:string):Promise<any> => {
     });
 });
 
+userSchema.static("disableUserGoogle2fa", (id:string):Promise<any> => {
+    return new Promise((resolve:Function, reject:Function) => {        
+        if (!_.isString(id)) {
+            return reject(new TypeError("Id is not a valid string."));
+        }
+        User.findOneAndUpdate({
+            '_id':id},{$set:{
+            'google2fa.disabled':false
+        }})
+            .exec((err, user) => {                
+              err ? reject({success:false, message: err.message})
+                  : resolve({success:true, data: user});
+            });
+    });
+});
+
 let User = mongoose.model("User", userSchema);
 export default User;

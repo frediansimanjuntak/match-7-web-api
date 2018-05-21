@@ -83,4 +83,22 @@ export class UserController {
         .then((user) => res.status(200).json(user))
         .catch(error => res.status(400).json(error));
   }
+
+  static enableUserGoogle2fa(req: express.Request, res: express.Response): void {
+    let _userId = req["user"]._id;
+
+    UserDAO
+        ["enableUserGoogle2fa"](_userId)
+        .then((user) => res.status(200).json(user))
+        .catch(error => res.status(400).json(error));
+  }
+
+  static disableUserGoogle2fa(req: express.Request, res: express.Response): void {
+    let _userId = req["user"]._id;
+
+    UserDAO
+        ["disableUserGoogle2fa"](_userId)
+        .then((user) => res.status(200).json(user))
+        .catch(error => res.status(400).json(error));
+  }
 }

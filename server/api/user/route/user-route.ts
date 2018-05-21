@@ -25,6 +25,14 @@ export class UserRoutes {
         .post(auth.isAuthenticated(), UserController.activateUser);
       
       router
+        .route("/api/users/google2fa/enable")
+        .post(auth.isAuthenticated(), UserController.enableUserGoogle2fa);
+
+      router
+          .route("/api/users/google2fa/disable")
+          .post(auth.isAuthenticated(), UserController.disableUserGoogle2fa);
+      
+      router
         .route("/api/me")
         .get(auth.isAuthenticated(), UserController.me);
               
