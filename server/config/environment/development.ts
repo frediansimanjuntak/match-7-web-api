@@ -15,11 +15,11 @@ export default {
   },
   mandrill: {
     apiKey: '6J3fRtJmpBJKXqHnSRPyhg',
-    fromEmail: 'us@quarkspark.com',
-    username: 'us.qs',
+    fromEmail: 'no-reply@match7.co',
+    username: 'match7',
     password: '5A3TV7VKpLOZ7vIZCRb1Qg',
     secret: '5A3TV7VKpLOZ7vIZCRb1Qg',
-    address: 'us@quarkspark.com'
+    address: 'no-reply@match7.co'
   },
 
   // Seed database on startup

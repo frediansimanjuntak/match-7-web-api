@@ -8,6 +8,10 @@ export class UserRoutes {
     static init(router: express.Router) {
       
       router
+        .route("/api/me")
+        .get(auth.isAuthenticated(), UserController.me);
+
+      router
         .route("/api/register")
         .post(UserController.register);
 
@@ -22,7 +26,15 @@ export class UserRoutes {
       
       router
         .route("/api/users/activation")
-        .post(auth.isAuthenticated(), UserController.activateUser);
+        .post(UserController.activateUser);
+                    
+      router
+        .route("/api/user/education/add")
+        .post(auth.isAuthenticated(), UserController.addUserEducation);
+      
+      router
+        .route("/api/user/education/edit/:id_education")
+        .post(auth.isAuthenticated(), UserController.editUserEducation);      
       
       router
         .route("/api/users/google2fa/enable")
@@ -31,17 +43,5 @@ export class UserRoutes {
       router
           .route("/api/users/google2fa/disable")
           .post(auth.isAuthenticated(), UserController.disableUserGoogle2fa);
-      
-      router
-        .route("/api/me")
-        .get(auth.isAuthenticated(), UserController.me);
-              
-      router
-        .route("/api/user/education/add")
-        .post(auth.isAuthenticated(), UserController.addUserEducation);
-      
-      router
-        .route("/api/user/education/edit/:id_education")
-        .post(auth.isAuthenticated(), UserController.editUserEducation);
     }
 }

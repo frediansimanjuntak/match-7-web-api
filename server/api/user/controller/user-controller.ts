@@ -86,7 +86,6 @@ export class UserController {
 
   static enableUserGoogle2fa(req: express.Request, res: express.Response): void {
     let _userId = req["user"]._id;
-
     UserDAO
         ["enableUserGoogle2fa"](_userId)
         .then((user) => res.status(200).json(user))

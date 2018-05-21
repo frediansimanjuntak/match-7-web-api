@@ -159,11 +159,10 @@ userSchema.static("editUserEducation", (id:string, id_education:string, user:Obj
 });
 
 userSchema.static("enableUserGoogle2fa", (id:string):Promise<any> => {
-    return new Promise((resolve:Function, reject:Function) => {        
-        if (!_.isString(id)) {
-            return reject(new TypeError("Id is not a valid string."));
-        }
-        let google2fa_data = google2fa.createToken();
+    return new Promise((resolve:Function, reject:Function) => {     
+        console.log(id);
+        let google2fa_data = google2fa.createToken().then(google2fa_data => {
+            
         User.findOneAndUpdate({
             '_id':id},{$set:{
             'google2fa.disabled':true,
@@ -174,6 +173,7 @@ userSchema.static("enableUserGoogle2fa", (id:string):Promise<any> => {
               err ? reject({success:false, message: err.message})
                   : resolve({success:true, data: user});
             });
+        });
     });
 });
 

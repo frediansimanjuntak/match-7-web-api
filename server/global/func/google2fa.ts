@@ -6,16 +6,18 @@ import * as QRCode from 'qrcode';
 
 export class google2fa{
 	static createToken(){
-        var secret = speakeasy.generateSecret({length: 20});
-        console.log(secret.base32);
+        return new Promise((resolve:Function, reject:Function) => {
+            var secret = speakeasy.generateSecret({length: 20});            
+            QRCode.toDataURL(secret.otpauth_url, function(err, image_data) {
+                // console.log(secret.base32);
+                // console.log(image_data); // A data URI for the QR code image
+                var data = {
+                    'secret':secret.base32,
+                    'barcode':image_data
+                }
+                resolve(data);
+            });
+        })
         
-        QRCode.toDataURL(secret.otpauth_url, function(err, image_data) {
-            return {secret:secret.base32, barcode:image_data}
-            // console.log(image_data); // A data URI for the QR code image
-        });
     }
-
-    static createBarcode(data){
-
-	}
 }
