@@ -5,6 +5,7 @@ import {AttachmentController} from "../controller/attachment-controller";
 import * as auth from '../../../auth/auth-service';
 import * as multer from "multer";
 import * as mime from "mime";
+import * as path from "path";
 import * as crypto from "crypto";
 
 const maxSize = 2 * 1048576 ; //1 Megabyte = 1,048,576 byte 
@@ -18,7 +19,17 @@ const storage =   multer.diskStorage({
         })
     }
   });
-const upload = multer({ storage : storage, limits: { fileSize: maxSize } });
+const upload = multer({ 
+    storage : storage, 
+    fileFilter: function (req, file, callback) {
+        var ext = path.extname(file.originalname);
+        if(ext !== '.png' && ext !== '.jpg' && ext !== '.jpeg') {
+            return callback(new Error('Only images are allowed'))
+        }
+        callback(null, true)
+    },
+    limits: { fileSize: maxSize } 
+});
 
 export class AttachmentRoutes {
     static init(router: express.Router) {
