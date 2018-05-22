@@ -3,13 +3,17 @@ import * as mongoose from "mongoose";
 var Schema = mongoose.Schema;
 
 let schema = new mongoose.Schema({
-    sender_user_id: {
+    sender: {
         type: Schema.Types.ObjectId,
-        ref: 'users'
+        ref: 'Users'
     },
-    receive_user_id: {
+    receiver: {
         type: Schema.Types.ObjectId,
-        ref: 'users'
+        ref: 'Users'
+    },
+    match: {
+        type: Schema.Types.ObjectId,
+        ref: 'Matches'
     },
     is_read: {type: Boolean, default: false, trim: true},
     chat: {type: String, trim: true},

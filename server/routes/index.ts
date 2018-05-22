@@ -6,6 +6,7 @@ import {InterestRoutes} from "../api/interest/route/interest-route";
 import {UserQuizAnswerRoutes} from "../api/user_quiz_answer/route/user_quiz_answer-route";
 import {AttachmentRoutes} from "../api/attachment/route/attachment-route";
 import {ChatRoutes} from "../api/chat/route/chat-route";
+import {MatchRoutes} from "../api/match/route/match-route";
 
 
 export class Routes {
@@ -17,6 +18,7 @@ export class Routes {
      UserQuizAnswerRoutes.init(router);
      AttachmentRoutes.init(router);
      ChatRoutes.init(router);
+     MatchRoutes.init(router);
 
     
      app.use('/auth', require('../auth').default);
