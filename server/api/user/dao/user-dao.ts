@@ -254,5 +254,36 @@ userSchema.static("changeDisabled", (id:string, user:Object):Promise<any> => {
     });
 });
 
+userSchema.static("blockedUsers", (id:string, user:Object):Promise<any> => {
+    return new Promise((resolve:Function, reject:Function) => {    
+        if (!_.isObject(user)) {
+            return reject(new TypeError("User is not a valid object."));
+        }                
+        let body:any = user;
+        User.findOne({"_id": id, "blocked_users": {$in: [body.id_block]}})
+        .exec((err, user) => { 
+            if(err){
+                reject({message: err.message});
+            }
+            if(user){
+                if(user.length == 0){
+                    User.findByIdAndUpdate(id, {
+                            $push: {
+                                "blocked_users": body.id_block 
+                            }
+                        })
+                        .exec((err, update) => {
+                            err ? reject({success:false, message: err.message})
+                                : resolve({success:true, data: update});
+                        });
+                }
+                else if(user.length >= 1){
+                    resolve({message: "This User Already Block"})
+                }
+            }   
+        });
+    });
+});
+
 let User = mongoose.model("User", userSchema);
 export default User;

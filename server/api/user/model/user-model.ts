@@ -45,6 +45,10 @@ let UsersSchema = new mongoose.Schema({
       type: Schema.Types.ObjectId,
 		  ref: 'Interests'	
     }],
+    blocked_users:[{
+      type: Schema.Types.ObjectId,
+		  ref: 'Users'
+    }],
     created_at: {type: Date, default: Date.now},
     updated_at: {type: Date, default: Date.now}
 });

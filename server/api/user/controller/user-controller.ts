@@ -130,4 +130,14 @@ export class UserController {
         .then((user) => res.status(200).json(user))
         .catch(error => res.status(400).json(error));
   }
+
+  static blockedUsers(req: express.Request, res: express.Response): void {
+    let _user = req.body;
+    let _userId = req["user"].role == "user" ? req["user"]._id : _user.id_user;
+
+    UserDAO
+        ["blockedUsers"](_userId, _user)
+        .then((user) => res.status(200).json(user))
+        .catch(error => res.status(400).json(error));
+  }
 }
