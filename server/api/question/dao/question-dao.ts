@@ -32,6 +32,19 @@ questionSchema.static("getById", (id: string):Promise<any> => {
     });
 });
 
+questionSchema.static("getByQuiz", (quizId: string):Promise<any> => {
+    return new Promise((resolve:Function, reject:Function) => {
+        let _query = {'quiz': quizId};
+
+        Question.find(_query)
+            .populate('quiz')
+            .exec((err, question) => {
+              err ? reject({success:false, message: err.message})
+                  : resolve({success:true, data: question});
+            });
+    });
+});
+
 questionSchema.static("createQuestion", (question:Object):Promise<any> => {
     return new Promise((resolve:Function, reject:Function) => {
       if (!_.isObject(question)) {

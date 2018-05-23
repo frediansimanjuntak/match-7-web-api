@@ -16,6 +16,13 @@ export class QuestionController {
         .catch(error => res.status(400).json(error));
   }
 
+  static getByQuiz(req: express.Request, res: express.Response):void {
+    QuestionDAO
+        ["getByQuiz"](req.params.id_quiz)
+        .then(question => res.status(200).json(question))
+        .catch(error => res.status(400).json(error));
+  }
+
   static createQuestion(req: express.Request, res: express.Response):void {
       let _question = req.body;
 
