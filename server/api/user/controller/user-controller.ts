@@ -119,4 +119,13 @@ export class UserController {
         .then((user) => res.status(200).json(user))
         .catch(error => res.status(400).json(error));
   }
+
+  static changeDisabled(req: express.Request, res: express.Response): void {
+    let _user = req.body;
+
+    UserDAO
+        ["changeDisabled"](_user)
+        .then((user) => res.status(200).json(user))
+        .catch(error => res.status(400).json(error));
+  }
 }

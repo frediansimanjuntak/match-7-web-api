@@ -217,27 +217,50 @@ userSchema.static("changePassword", (user:Object):Promise<any> => {
             return reject(new TypeError("User is not a valid object."));
         }                
         let body:any = user;
-        User.findOneAndUpdate({
+        User.findOne({
             $or: [
-              {'username': body.username.toLowerCase()}, 
-              {'email': body.username.toLowerCase()}]
-          },{$set:{
-            'password':body.password
-        }})
-            .exec((err, user) => {    
-                if (err) {
-                    reject({success:false, message: err.message});
-                }       
-                else {
-                    user.password = body.password;
-                    user.save((err, saved) => {
-                        if (err) reject({success:false, message: err.message});
-                        else if (saved) {
-                            resolve({success:true, data: saved});
-                        }
-                    }) 
-                }     
-            });
+                {'username': body.username.toLowerCase()}, 
+                {'email': body.username.toLowerCase()}
+            ]
+        })
+        .exec((err, user) => {    
+            if (err) {
+                reject({success:false, message: err.message});
+            }       
+            else {
+                user.password = body.password;
+                user.save((err, saved) => {
+                    if (err) reject({success:false, message: err.message});
+                    else if (saved) {
+                        resolve({success:true, data: saved});
+                    }
+                }) 
+            }     
+        });
+    });
+});
+
+userSchema.static("changeDisabled", (user:Object):Promise<any> => {
+    return new Promise((resolve:Function, reject:Function) => {    
+        if (!_.isObject(user)) {
+            return reject(new TypeError("User is not a valid object."));
+        }                
+        let body:any = user;
+        User.findOne({
+            $or: [
+                    {'username': body.username.toLowerCase()}, 
+                    {'email': body.username.toLowerCase()}
+                ]
+        })
+        .exec((err, user) => { 
+            user.disabled = user.disabled == false ? true : false;
+            user.save((err, saved) => {
+                if (err) reject({success:false, message: err.message});
+                else if (saved) {
+                    resolve({success:true, data: saved});
+                }
+            })    
+        });
     });
 });
 

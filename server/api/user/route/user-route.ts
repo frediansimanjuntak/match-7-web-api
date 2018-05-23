@@ -35,6 +35,11 @@ export class UserRoutes {
       router
         .route("/api/users/change/location")
         .put(auth.isAuthenticated(), UserController.changeLocation);
+      
+        
+      router
+        .route("/api/users/change/status")
+        .put(auth.isAuthenticated(), UserController.changeDisabled);
 
       router
         .route("/api/user/education/add")
