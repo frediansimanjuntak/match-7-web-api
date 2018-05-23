@@ -111,20 +111,22 @@ export class UserController {
         .catch(error => res.status(400).json(error));
   }
 
-  static changePassword(req: express.Request, res: express.Response): void {
+  static changePassword(req: express.Request, res: express.Response): void {    
     let _user = req.body;
+    let _userId = req["user"].role == "user" ? req["user"]._id : _user.id_user;
 
     UserDAO
-        ["changePassword"](_user)
+        ["changePassword"](_userId, _user)
         .then((user) => res.status(200).json(user))
         .catch(error => res.status(400).json(error));
   }
 
   static changeDisabled(req: express.Request, res: express.Response): void {
     let _user = req.body;
+    let _userId = req["user"].role == "user" ? req["user"]._id : _user.id_user;
 
     UserDAO
-        ["changeDisabled"](_user)
+        ["changeDisabled"](_userId, _user)
         .then((user) => res.status(200).json(user))
         .catch(error => res.status(400).json(error));
   }

@@ -32,7 +32,7 @@ let UsersSchema = new mongoose.Schema({
     },
     disabled: {type: Boolean, default: false, trim: true},
     status: {type: String, trim: true},
-    role: {type: String,  enum: ['user','admin'], trim: true},
+    role: {type: String,  enum: ['user','admin'], default: 'user', trim: true},
     education: [{
       type: {type: String, enum: ['degree','master','doctorate','diploma','high school'], trim: true},
       school_name: {type: String, trim: true},
