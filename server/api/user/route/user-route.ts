@@ -17,7 +17,7 @@ export class UserRoutes {
 
       router
         .route("/api/users")
-        .get(auth.isAuthenticated(), UserController.getAll)
+        .get(UserController.getAll)
         .put(auth.isAuthenticated(), UserController.updateUser);
 
       router

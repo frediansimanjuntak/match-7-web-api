@@ -21,17 +21,18 @@ import * as multer from "multer";
 
 const app = express();
 
-var PORT = process.env.PORT || 6666;
+var PORT = process.env.PORT || 7777;
 
 RoutesConfig.init(app);
 DBConfig.init();
 
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*")
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization, Cache-Control")
-  res.header("Access-Control-Allow-Methods", "POST, GET, PUT, DELETE, OPTIONS")
-  next()
-})
+// app.use((req, res, next) => {
+//   res.header("Access-Control-Allow-Origin", "*")
+//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type")
+//   res.header("Access-Control-Allow-Methods", "POST, GET, PUT, DELETE, OPTIONS")
+//   next()
+// })
+
 
 Routes.init(app, express.Router());
 

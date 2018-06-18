@@ -6,6 +6,7 @@ import * as bodyParser from "body-parser";
 import * as helmet from "helmet";
 import * as compression from "compression";
 import * as zlib from "zlib";
+import * as cors from "cors"
 
 export class RoutesConfig {
     static init(application: express.Application):void {
@@ -14,6 +15,7 @@ export class RoutesConfig {
         let _jspmPackages = "/jspm_packages/";
         let _clientFiles = (process.env.NODE_ENV === "production") ? "/client/dist/" : "/client/dev/";
 
+        application.use(cors())
         application.use(compression({
             level: zlib.Z_BEST_COMPRESSION,
             threshold: "1kb"
