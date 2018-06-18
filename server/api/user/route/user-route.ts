@@ -10,6 +10,11 @@ export class UserRoutes {
       router
         .route("/api/me")
         .get(auth.isAuthenticated(), UserController.me);
+      
+        
+      router
+        .route("/api/test")
+        .get(UserController.getTest);
 
       router
         .route("/api/register")

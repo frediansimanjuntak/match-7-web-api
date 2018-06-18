@@ -10,6 +10,13 @@ export class UserController {
         .catch(error => res.status(400).json(error));
   }
 
+  static getTest(req: express.Request, res: express.Response): void {
+    UserDAO
+        ["getTest"]()
+        .then(users => res.status(200).json(users))
+        .catch(error => res.status(400).json(error));
+  }
+
   static getById(req: express.Request, res: express.Response):void {
     UserDAO
         ["getById"](req.params.id)

@@ -17,6 +17,14 @@ userSchema.static("getAll", ():Promise<any> => {
     });
 });
 
+userSchema.static("getTest", ():Promise<any> => {
+    return new Promise((resolve:Function, reject:Function) => {
+        let _query = {'message':"get success"};
+
+        resolve (_query);
+    });
+});
+
 userSchema.static("getById", (id: string):Promise<any> => {
     return new Promise((resolve:Function, reject:Function) => {
         if (!id) {
