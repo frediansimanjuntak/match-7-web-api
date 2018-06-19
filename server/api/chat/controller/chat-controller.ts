@@ -9,6 +9,16 @@ export class ChatController {
         .catch(error => res.status(400).json(error));
   }
 
+  static getByMatch(req: express.Request, res: express.Response): void {
+    let _userId = req["user"]._id;
+    let _matchId = req.params.match_id;
+
+    ChatDAO
+        ["getByMatch"](_userId, _matchId)
+        .then(chats => res.status(200).json(chats))
+        .catch(error => res.status(400).json(error));
+  }
+
   static getById(req: express.Request, res: express.Response):void {
     ChatDAO
         ["getById"](req.params.id)

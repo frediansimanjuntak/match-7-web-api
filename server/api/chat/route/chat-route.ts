@@ -16,5 +16,9 @@ export class ChatRoutes {
         .get(auth.isAuthenticated(), ChatController.getById)
         .put(auth.isAuthenticated(), ChatController.updateChat)
         .delete(auth.isAuthenticated(), ChatController.deleteChat);
+      
+      router
+        .route("/api/chat/match/:match_id")
+        .get(auth.isAuthenticated(), ChatController.getByMatch);
     }
 }

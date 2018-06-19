@@ -15,6 +15,18 @@ chatSchema.static("getAll", ():Promise<any> => {
     });
 });
 
+chatSchema.static("getByMatch", (userId: string, matchId: string):Promise<any> => {
+    return new Promise((resolve:Function, reject:Function) => {
+        let _query = {$or:[{'sender':userId}, {'receiver':userId}], 'matchId':matchId};
+
+        Chat.find(_query)
+            .exec((err, chats) => {
+              err ? reject({success:false, message: err.message})
+                  : resolve({success:true, data: chats});
+            });
+    });
+});
+
 chatSchema.static("getById", (id: string):Promise<any> => {
     return new Promise((resolve:Function, reject:Function) => {
         if (!id) {
