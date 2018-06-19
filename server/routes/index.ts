@@ -6,6 +6,7 @@ import {InterestRoutes} from "../api/interest/route/interest-route";
 import {UserQuizAnswerRoutes} from "../api/user_quiz_answer/route/user_quiz_answer-route";
 import {AttachmentRoutes} from "../api/attachment/route/attachment-route";
 import {ChatRoutes} from "../api/chat/route/chat-route";
+import {IsMatchRoutes} from "../api/is_match/route/is_match-route";
 import {MatchRoutes} from "../api/match/route/match-route";
 
 
@@ -18,6 +19,7 @@ export class Routes {
      UserQuizAnswerRoutes.init(router);
      AttachmentRoutes.init(router);
      ChatRoutes.init(router);
+     IsMatchRoutes.init(router);
      MatchRoutes.init(router);
 
     
