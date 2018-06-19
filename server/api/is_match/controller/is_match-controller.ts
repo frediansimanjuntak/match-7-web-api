@@ -1,7 +1,7 @@
 import * as express from "express";
 import IsMatchDAO from "../dao/is_match-dao";
 
-export class MatchController {
+export class IsMatchController {
   static createLikeIsMatch(req: express.Request, res: express.Response):void {
       let _match = req.body;
       let _userId = req["user"]._id;
