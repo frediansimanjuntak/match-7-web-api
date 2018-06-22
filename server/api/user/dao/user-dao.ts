@@ -3,7 +3,11 @@ import * as Promise from "bluebird";
 import * as _ from "lodash";
 import userSchema from "../model/user-model";
 import {email} from '../../../global/func/email';
+import {api_qs} from '../../../global/func/api_qs';
 import {google2fa} from '../../../global/func/google2fa';
+import * as request from 'request'; 
+import * as fetch from "node-fetch";
+import * as FormData from "form-data";
 
 userSchema.static("getAll", ():Promise<any> => {
     return new Promise((resolve:Function, reject:Function) => {
@@ -39,36 +43,40 @@ userSchema.static("getById", (id: string):Promise<any> => {
     });
 });
 
-userSchema.static("me", (userId: string):Promise<any> => {
+userSchema.static("me", (app_key: string, ses_key: string, usr_email: string):Promise<any> => {
     return new Promise((resolve:Function, reject:Function) => {
-        if (!userId) {
-          return reject(new TypeError("User is not a valid."));
-        }
-
-        User.findById(userId)
-            .exec((err, user) => {
-                err ? reject({success:false, message: err.message})
-                    : resolve({success:true, data: user});
-            });
+        User.checkSessionAPIQS(app_key, ses_key, usr_email).then((user) => {
+            if(user.success == 1) {
+                User.findOne({'user_id':user.user_id})
+                .exec((err, user) => {
+                    err ? reject({success:false, message: err.message})
+                        : resolve({success:true, data: user});
+                });
+            }
+            else {
+                reject({success:false, message: user.message})
+            }
+        })        
     });
 });
 
 userSchema.static("register", (user:Object):Promise<any> => {
     return new Promise((resolve:Function, reject:Function) => {
-      if (!_.isObject(user)) {
-        return reject(new TypeError("User is not a valid object."));
-      }
-        let randomCode = Math.random().toString(36).substr(2, 6);
-        let _user = new User(user);
-        _user.verification.code = randomCode;
-        _user.verification.verified.type = "email";
-        _user.save((err, saved) => {
-            if (err) reject({success:false, message: err.message});
-            else if (saved) {
-                email.signUp(saved);
-                resolve({success:true, data: saved});
+        api_qs.register(user).then((result) => {
+            console.log(result);
+            if(result.success == 1) {               
+                let _user = new User(user);
+                _user.save((err, saved) => {
+                    if (err) reject({success:false, message: err.message});
+                    else if (saved) {
+                        resolve({success:true, data: saved});
+                    }
+                });
             }
-        });
+            else {
+                reject({success:false, message: "There is something wrong"})
+            }
+        });        
     });
 });
 
@@ -290,6 +298,23 @@ userSchema.static("blockedUsers", (id:string, user:Object):Promise<any> => {
                 }
             }   
         });
+    });
+});
+
+userSchema.static("checkSessionAPIQS", (app_key: string, ses_key: string, usr_email: string):Promise<any> => {
+    return new Promise((resolve:Function, reject:Function) => {    
+        const form = new FormData();
+        form.append('application_key', app_key);
+        form.append('session_key', ses_key);
+        form.append('user_email', usr_email);
+
+        const url = 'https://api.quarkspark.com/session/check';
+        fetch(url, {
+        method: 'POST', 
+        body: form
+        }).then(res => res.json())
+        .catch(error => reject(error))
+        .then(response => resolve(response));
     });
 });
 

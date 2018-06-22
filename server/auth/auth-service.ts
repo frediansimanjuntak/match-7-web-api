@@ -57,6 +57,11 @@ export function isAuthenticated() {
     });
 }
 
+export function checkActive() {
+  
+}
+
+
 /**
  * Checks if the user role meets the minimum requirements of the route
  */

@@ -25,10 +25,13 @@ export class UserController {
   }
 
   static me(req: express.Request, res: express.Response):void {
-    let _userId = req["user"]._id;
+    // let _userId = req["user"]._id;
+    let _app_key = req.params.app_key;    
+    let _ses_key = req.params.ses_key;
+    let _usr_email = req.params.email;
 
     UserDAO
-        ["me"](_userId)
+        ["me"](_app_key, _ses_key, _usr_email)
         .then(user => res.status(200).json(user))
         .catch(error => res.status(400).json(error));
   }
