@@ -8,8 +8,8 @@ export class UserRoutes {
     static init(router: express.Router) {
       
       router
-        .route("/api/me/:app_key/:ses_key/:email")
-        .get(UserController.me);      
+        .route("/api/me")
+        .get(auth.isAuthenticated(), UserController.me);      
         
       router
         .route("/api/test")

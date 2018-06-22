@@ -6,8 +6,8 @@ let UsersSchema = new mongoose.Schema({
     user_id: {type: String, unique: true, trim: true},
     email: {type: String, unique: true, required: true, trim: true},
     authentication: {
-      application_key: {type: String, trim: true},
-      session_key: {type: String, trim: true} 
+      application_key: {type: String, trim: true, select: false},
+      session_key: {type: String, trim: true, select: false} 
     },
     first_name: {type: String, lowercase: true, trim: true},
     last_name: {type: String, lowercase: true, trim: true},

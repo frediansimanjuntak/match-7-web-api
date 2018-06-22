@@ -11,11 +11,9 @@ var router = express.Router();
 
 router.post('/', function(req, res, next) {
   api_qs.login(req.body).then((result) => {
-    console.log(result);
     if(result.success == 1) {
       passport.authenticate('local.user', function(err, user, info) {
         var error = err || info;
-        console.log(err, info, user);
         var remember;
         if(error) {
           if(error.message == "Missing credentials"){
@@ -31,12 +29,10 @@ router.post('/', function(req, res, next) {
         if(user._id && user.email) {
           let data = {
             'user_id': result.user_id,
-            'authentication': {
-              'application_key':req.body.application_key,
-              'session_key': result.session_key
-            }
+            'application_key':req.body.application_key,
+            'session_key': result.session_key
           }
-          User.updateUser(user._id, data).then((result) => {  
+          User.updateAuthUser(user._id, data).then((result) => {  
             console.log(result);
             if (result.success == true) {              
               var token = signToken(user._id);
