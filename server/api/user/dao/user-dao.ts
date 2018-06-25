@@ -53,21 +53,56 @@ userSchema.static("me", (user_id: string):Promise<any> => {
     });
 });
 
+
+userSchema.static("create", (user:Object):Promise<any> => {
+    return new Promise((resolve:Function, reject:Function) => {
+        let _user = new User(user);
+        _user.save((err, saved) => {
+            console.log(saved);
+            err ? reject({success:false, message: err.message})
+                : resolve({success:true, data: saved});
+        });      
+    });
+});
+
 userSchema.static("register", (user:Object):Promise<any> => {
     return new Promise((resolve:Function, reject:Function) => {
         api_qs.register(user).then((result) => {
             console.log(result);
             if(result.success == 1) {               
-                let _user = new User(user);
-                _user.save((err, saved) => {
-                    err ? reject({success:false, message: err.message})
-                        : resolve({success:true, data: saved});
-                });
+                User.create(user).then((res) => {
+                    if (res.success == true) {
+                        resolve({success:true, data: res});
+                    }
+                })  
             }
             else {
                 reject({success:false, message: "There is something wrong"})
             }
         });        
+    });
+});
+
+userSchema.static("loginRegister", (user:Object):Promise<any> => {
+    return new Promise((resolve:Function, reject:Function) => {
+        User.findOne({
+            user_id:user['user_id']
+        })
+        .exec((err, result) => {
+            if (err) {
+                reject({success:false, message: err.message})
+            }
+            else if (result) {
+                resolve({success:true, data: result});
+            }
+            else {  
+                User.create(user).then((res) => {
+                    if (res.success == true) {
+                        resolve({success:true, data: res});
+                    }
+                }) 
+            }
+        });             
     });
 });
 
@@ -123,22 +158,11 @@ userSchema.static("updateAuthUser", (id:string, user:Object):Promise<any> => {
         if (!_.isObject(user)) {
             return reject(new TypeError("User is not a valid object."));
         }        
-        console.log(id, user);
-        User.findById(id)
-        .exec((err, userData) => {
-            if (err) {
-                reject({success:false, message: err.message})
-            }
-            else {                
-                userData.user_id = user['user_id'];
-                userData.authentication.application_key = user['application_key'];
-                userData.authentication.session_key = user['session_key'];
-                userData.save((err, saved) => {
-                    err ? reject({success:false, message: err.message})
-                        : resolve({success:true, data: saved});
-                });
-            }
-        })
+        User.findByIdAndUpdate(id, user)
+        .exec((err, user) => {                
+          err ? reject({success:false, message: err.message})
+              : resolve({success:true, data: user});
+        });
     });
 });
 

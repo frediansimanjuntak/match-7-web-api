@@ -9,7 +9,6 @@ const apiUrl = 'https://api.quarkspark.com/';
 export class api_qs{
     static login(data){
         return new Promise((resolve:Function, reject:Function) => {
-            console.log(data);
             const form = new FormData();
             form.append('application_key', data.application_key);
             form.append('email', data.email);
@@ -27,7 +26,6 @@ export class api_qs{
 
     static register(data){
         return new Promise((resolve:Function, reject:Function) => {
-            console.log(data);
             const form = new FormData();
             form.append('email', data.email);
             form.append('password1', data.password1);
