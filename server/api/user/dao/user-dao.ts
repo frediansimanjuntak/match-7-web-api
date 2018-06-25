@@ -171,48 +171,75 @@ userSchema.static("updateAuthUser", (id:string, user:Object):Promise<any> => {
     });
 });
 
-userSchema.static("addUserEducation", (id:string, user:Object):Promise<any> => {
+userSchema.static("addUserEducation", (id:string, user:any):Promise<any> => {
     return new Promise((resolve:Function, reject:Function) => {
         if (!_.isObject(user)) {
             return reject(new TypeError("User is not a valid object."));
         }        
-        let body:any = user;
-        let updatePushObj = {$push: {}};
-        console.log()
-        
-        updatePushObj.$push['education'] = ({'type': body.type, 'school_name': body.school_name});
-
-        User.findByIdAndUpdate(id, updatePushObj)
-            .exec((err, user) => {
-                
-              err ? reject({success:false, message: err.message})
-                  : resolve({success:true, data: user});
-            });
+        let updatePushObj = {$push: {}};        
+        updatePushObj.$push['education'] = ({$each: user});
+        User.me(id).then((me_data) => {
+            if(me_data.success == true) {
+                if (me_data.data.education.length > 0) {
+                    let query = { $set: { education: [] }}
+                    User.updateUser(id, query);
+                }               
+                User.updateUser(id, updatePushObj)
+                .then((result) => {
+                    resolve({success:true, data: result});
+                })
+                .catch(err => {reject({success:false, message: err.message})})
+            }
+        })
+        .catch(err => {reject({success:false, message: err.message})})
     });
 });
 
-userSchema.static("editUserEducation", (id:string, id_education:string, user:Object):Promise<any> => {
+userSchema.static("addUserOccupation", (id:string, user:any):Promise<any> => {
     return new Promise((resolve:Function, reject:Function) => {
         if (!_.isObject(user)) {
             return reject(new TypeError("User is not a valid object."));
         }        
-        
-        let ObjectID = mongoose.Types.ObjectId;  
-        let body:any = user;
-        
-        User.update({'_id':id, 'education':{$elemMatch: {'_id': new ObjectID(id_education)}}}, {
-            $set: {
-                'education.$' : {
-                    'type':body.type,
-                    'school_name':body.school_name  
-                }
+        let updatePushObj = {$push: {}};        
+        updatePushObj.$push['occupation'] = ({$each: user});
+        User.me(id).then((me_data) => {
+            if(me_data.success == true) {
+                if (me_data.data.occupation.length > 0) {
+                    let query = { $set: { occupation: [] }}
+                    User.updateUser(id, query);
+                }               
+                User.updateUser(id, updatePushObj)
+                .then((result) => {
+                    resolve({success:true, data: result});
+                })
+                .catch(err => {reject({success:false, message: err.message})})
             }
         })
-            .exec((err, user) => {
-                
-              err ? reject({success:false, message: err.message})
-                  : resolve({success:true, data: user});
-            });
+        .catch(err => {reject({success:false, message: err.message})})
+    });
+});
+
+userSchema.static("addUserInterest", (id:string, user:any):Promise<any> => {
+    return new Promise((resolve:Function, reject:Function) => {
+        if (!_.isObject(user)) {
+            return reject(new TypeError("User is not a valid object."));
+        }        
+        let updatePushObj = {$push: {}};        
+        updatePushObj.$push['interest'] = ({$each: user});
+        User.me(id).then((me_data) => {
+            if(me_data.success == true) {
+                if (me_data.data.interest.length > 0) {
+                    let query = { $set: { interest: [] }}
+                    User.updateUser(id, query);
+                }               
+                User.updateUser(id, updatePushObj)
+                .then((result) => {
+                    resolve({success:true, data: result});
+                })
+                .catch(err => {reject({success:false, message: err.message})})
+            }
+        })
+        .catch(err => {reject({success:false, message: err.message})})
     });
 });
 

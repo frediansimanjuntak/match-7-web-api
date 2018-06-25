@@ -49,12 +49,16 @@ export class UserRoutes {
         .put(auth.isAuthenticated(), UserController.changeDisabled);
 
       router
-        .route("/api/user/education/add")
+        .route("/api/user/education")
         .post(auth.isAuthenticated(), UserController.addUserEducation);
-      
+
       router
-        .route("/api/user/education/edit/:id_education")
-        .post(auth.isAuthenticated(), UserController.editUserEducation);      
+          .route("/api/user/occupation")
+          .post(auth.isAuthenticated(), UserController.addUserOccupation);
+
+      router
+        .route("/api/user/interest")
+        .post(auth.isAuthenticated(), UserController.addUserInterest);       
       
       router
         .route("/api/users/google2fa/enable")

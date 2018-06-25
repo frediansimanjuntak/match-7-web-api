@@ -80,13 +80,22 @@ export class UserController {
         .catch(error => res.status(400).json(error));
   }
 
-  static editUserEducation(req: express.Request, res: express.Response): void {
+  static addUserOccupation(req: express.Request, res: express.Response): void {
     let _userId = req["user"]._id;
-    let _idEducation = req.params.id_education;
     let _user = req.body;
 
     UserDAO
-        ["editUserEducation"](_userId, _idEducation, _user)
+        ["addUserOccupation"](_userId, _user)
+        .then((user) => res.status(200).json(user))
+        .catch(error => res.status(400).json(error));
+  }
+
+  static addUserInterest(req: express.Request, res: express.Response): void {
+    let _userId = req["user"]._id;
+    let _user = req.body;
+
+    UserDAO
+        ["addUserInterest"](_userId, _user)
         .then((user) => res.status(200).json(user))
         .catch(error => res.status(400).json(error));
   }
