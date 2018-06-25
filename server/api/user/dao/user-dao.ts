@@ -72,14 +72,19 @@ userSchema.static("register", (user:Object):Promise<any> => {
             if(result.success == 1) {               
                 User.create(user).then((res) => {
                     if (res.success == true) {
-                        resolve({success:true, data: res});
+                        resolve({success:true, message: "regitration success"});
                     }
                 })  
+                .catch((err) => {reject({success:false, message: "Please check your input"})}); 
+            }
+            else if(result.message) {
+                reject({success:false, message: result.message})
             }
             else {
-                reject({success:false, message: "There is something wrong"})
+                reject({success:false, message: "Please check your input"})
             }
-        });        
+        })
+        .catch((err) => {reject({success:false, message: "System Error"})});    
     });
 });
 
