@@ -59,4 +59,38 @@ export class api_qs{
             .then(response => resolve(response));
         })        
     }
+
+    static renewSession(app_key, ses_key, usr_id){
+        return new Promise((resolve:Function, reject:Function) => {
+            const form = new FormData();
+            form.append('application_key', app_key);
+            form.append('session_key', ses_key);
+            form.append('uuid', usr_id);
+    
+            const url = apiUrl+'session/renew';
+            fetch(url, {
+            method: 'POST', 
+            body: form
+            }).then(res => res.json())
+            .catch(error => reject(error))
+            .then(response => resolve(response));
+        })        
+    }
+
+    static detailsSession(app_key, ses_key, usr_id){
+        return new Promise((resolve:Function, reject:Function) => {
+            const form = new FormData();
+            form.append('application_key', app_key);
+            form.append('session_key', ses_key);
+            form.append('uuid', usr_id);
+    
+            const url = apiUrl+'session/details';
+            fetch(url, {
+            method: 'POST', 
+            body: form
+            }).then(res => res.json())
+            .catch(error => reject(error))
+            .then(response => resolve(response));
+        })        
+    }
 }

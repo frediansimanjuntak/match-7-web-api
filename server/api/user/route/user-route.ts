@@ -35,11 +35,7 @@ export class UserRoutes {
       router
         .route("/api/users/block-user")
         .post(UserController.blockedUsers);   
-              
-      router
-        .route("/api/users/change/password")
-        .put(UserController.changePassword);  
-      
+                    
       router
         .route("/api/users/change/location")
         .put(auth.isAuthenticated(), UserController.changeLocation);

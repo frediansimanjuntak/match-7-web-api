@@ -4,6 +4,7 @@ import * as jwt from 'jsonwebtoken';
 // import * as expressJwt from 'express-jwt';
 var expressJwt = require('express-jwt')
 import * as compose from 'composable-middleware';
+import * as jwtDecode from 'jwt-decode';
 import User from '../api/user/dao/user-dao';
 
 var validateJwt = expressJwt({
@@ -94,6 +95,32 @@ export function signToken(id) {
   // }
   return jwt.sign({ _id: id}, config.secrets.session, {expiresIn: 60 * 60});
 }
+
+
+export function renewToken(authorization) {
+  let token = authorization.substring(7);
+  let decoded = jwtDecode(token);
+  if (decoded.exp) {    
+    let userId = decoded._id;
+    User
+      .findById(userId)
+      .exec((err, user) => {
+        if (err) {
+          return ({message: err.message});
+        }
+        else if (user) {
+          var newToken = signToken(user._id);
+          return ({token: newToken});
+        }
+      })
+  }
+  else {
+    return ({message: "token not expired"});
+  }
+
+}
+
+
 
 // export function signToken(id, role, default_development) {
 //   return jwt.sign({ _id: id, role, default_development });

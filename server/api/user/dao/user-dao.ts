@@ -296,30 +296,6 @@ userSchema.static("changeLocation", (id:string, user:Object):Promise<any> => {
     });
 });
 
-userSchema.static("changePassword", (id:string, user:Object):Promise<any> => {
-    return new Promise((resolve:Function, reject:Function) => {    
-        if (!_.isObject(user)) {
-            return reject(new TypeError("User is not a valid object."));
-        }                
-        let body:any = user;
-        User.findOne({'_id':id})
-        .exec((err, user) => {    
-            if (err) {
-                reject({success:false, message: err.message});
-            }       
-            else {
-                user.password = body.password;
-                user.save((err, saved) => {
-                    if (err) reject({success:false, message: err.message});
-                    else if (saved) {
-                        resolve({success:true, data: saved});
-                    }
-                }) 
-            }     
-        });
-    });
-});
-
 userSchema.static("changeDisabled", (id:string, user:Object):Promise<any> => {
     return new Promise((resolve:Function, reject:Function) => {    
         if (!_.isObject(user)) {
@@ -367,23 +343,6 @@ userSchema.static("blockedUsers", (id:string, user:Object):Promise<any> => {
                 }
             }   
         });
-    });
-});
-
-userSchema.static("checkSessionAPIQS", (app_key: string, ses_key: string, usr_email: string):Promise<any> => {
-    return new Promise((resolve:Function, reject:Function) => {    
-        const form = new FormData();
-        form.append('application_key', app_key);
-        form.append('session_key', ses_key);
-        form.append('user_email', usr_email);
-
-        const url = 'https://api.quarkspark.com/session/check';
-        fetch(url, {
-        method: 'POST', 
-        body: form
-        }).then(res => res.json())
-        .catch(error => reject(error))
-        .then(response => resolve(response));
     });
 });
 
