@@ -79,6 +79,7 @@ export class api_qs{
 
     static detailsSession(app_key, ses_key, usr_id){
         return new Promise((resolve:Function, reject:Function) => {
+            console.log(app_key, ses_key, usr_id);
             const form = new FormData();
             form.append('application_key', app_key);
             form.append('session_key', ses_key);

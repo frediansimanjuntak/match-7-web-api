@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 
 let UsersSchema = new mongoose.Schema({    
     user_id: {type: String, unique: true, trim: true},
+    username: {type: String, unique: true, trim: true},
     email: {type: String, unique: true, trim: true},
     authentication: {
       application_key: {type: String, trim: true, select: false},
@@ -15,7 +16,8 @@ let UsersSchema = new mongoose.Schema({
     nickname: {type: String, trim: true},
     language: {type: String, trim: true},
     gender: {type: String,  enum: ['male','female'], trim: true},
-    dob: {type: Date, trim: true},
+    dob: {type: Date, trim: true},    
+    about: {type: String, trim: true},
     last_known_lat: {type: String, trim: true},
     last_known_lng: {type: String, trim: true},
     google2fa:{

@@ -98,6 +98,10 @@ userSchema.static("loginRegister", (user:Object):Promise<any> => {
                 reject({success:false, message: err.message})
             }
             else if (result) {
+                if (!result.first_name || !result.last_name) { 
+                    let query = { $set: user}
+                    User.updateUser(result._id, query);            
+                }       
                 resolve({success:true, data: result});
             }
             else {  

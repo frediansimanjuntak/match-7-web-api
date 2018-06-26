@@ -11,49 +11,50 @@ var router = express.Router();
 
 
 router.post('/', function(req, res, next) {
-  api_qs.login(req.body).then((result) => {
-    if(result.success == 1) {
-      let data = {
-        'user_id': result.user_id,
-        'email': req.body.email,
-        'authentication': {            
-          'application_key':req.body.application_key,
-          'session_key': result.session_key
-        }
-      }
-      User.loginRegister(data).then((result) => {
-        if (result.success == true) {
-          passport.authenticate('local.user', function(err, user, info) {
-            var error = err || info;
-            var remember;
-            if(error) {
-              if(error.message == "Missing credentials"){
-                return res.status(401).json({message: "Incomplete Data Username/Password to logged in", code: 413});
-              }      
-              else{
-                return res.status(401).json(error);
+  api_qs.login(req.body).then((login_res) => {
+    if(login_res.success == 1) {
+      api_qs.detailsSession(req.body.application_key, login_res.session_key, login_res.user_id)
+      .then((usr_detail) => {
+        let data = {
+          'user_id': login_res.user_id,
+          'email': req.body.email,
+          'authentication': {            
+            'application_key':req.body.application_key,
+            'session_key': login_res.session_key
+          },
+          'first_name': usr_detail.first_name,
+          'last_name': usr_detail.last_name,
+          'phone': usr_detail.phone_number,
+        };
+        User.loginRegister(data).then((result) => {
+          if (result.success == true) {
+            passport.authenticate('local.user', function(err, user, info) {
+              var error = err || info;
+              if(error) {
+                if(error.message == "Missing credentials"){
+                  return res.status(401).json({message: "Incomplete Data Username/Password to logged in", code: 413});
+                }      
+                else{
+                  return res.status(401).json(error);
+                }
               }
-            }
-            if(!user) {
-              return res.status(404).json({message: 'Something went wrong, please try again.', code: 404});
-            }    
-            if(user._id && user.email) {
-              User.updateAuthUser(user._id, data).then((result) => {  
-                if (result.success == true) {              
-                  var token = signToken(user._id);
-                  res.json({ success: true, data:{token} });
-                }          
-              })
-            }
-            else{
-              res.json({message: 'please login first.'});
-            }    
-          })(req, res, next);
-        }
+              if(!user) {
+                return res.status(404).json({message: 'Something went wrong, please try again.', code: 404});
+              }    
+              if(user._id && user.email) {
+                var token = signToken(user._id);
+                res.json({ success: true, data:{token} });
+              }
+            })(req, res, next);
+          }
+          else {
+            return res.status(401).json({message: "Incomplete Data Username/Password to logged in", code: 413});
+          }
+        })
       })
-      .catch(err => {return res.status(401).json({message: "Incomplete Data Username/Password to logged in", code: 413});})      
+      .catch(err => {return res.status(401).json({message: err.message, code: 413})});
     }
-    else if(result.success == 0) {
+    else if(login_res.success == 0) {
       return res.status(401).json({message: "Incorrect Username/Password", code: 413});
     }
     else {      
