@@ -58,7 +58,6 @@ userSchema.static("create", (user:Object):Promise<any> => {
     return new Promise((resolve:Function, reject:Function) => {
         let _user = new User(user);
         _user.save((err, saved) => {
-            console.log(saved);
             err ? reject({success:false, message: err.message})
                 : resolve({success:true, data: saved});
         });      
@@ -68,7 +67,6 @@ userSchema.static("create", (user:Object):Promise<any> => {
 userSchema.static("register", (user:Object):Promise<any> => {
     return new Promise((resolve:Function, reject:Function) => {
         api_qs.register(user).then((result) => {
-            console.log(result);
             if(result.success == 1) {               
                 User.create(user).then((res) => {
                     if (res.success == true) {
@@ -99,7 +97,7 @@ userSchema.static("loginRegister", (user:Object):Promise<any> => {
             }
             else if (result) {
                 if (!result.first_name || !result.last_name) { 
-                    let query = { $set: user}
+                    let query = { $set: {user}}
                     User.updateUser(result._id, query);            
                 }       
                 resolve({success:true, data: result});
@@ -110,6 +108,7 @@ userSchema.static("loginRegister", (user:Object):Promise<any> => {
                         resolve({success:true, data: res});
                     }
                 }) 
+                .catch(err => reject({success:false, message: err.message}))
             }
         });             
     });
@@ -249,7 +248,6 @@ userSchema.static("addUserInterest", (id:string, user:any):Promise<any> => {
 
 userSchema.static("enableUserGoogle2fa", (id:string):Promise<any> => {
     return new Promise((resolve:Function, reject:Function) => {     
-        console.log(id);
         let google2fa_data = google2fa.createToken().then(google2fa_data => {
             
         User.findOneAndUpdate({

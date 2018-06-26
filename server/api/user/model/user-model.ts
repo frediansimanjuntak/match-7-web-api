@@ -14,7 +14,7 @@ let UsersSchema = new mongoose.Schema({
     last_name: {type: String, lowercase: true, trim: true},
     phone: {type: String, unique: true, trim: true},
     language: {type: String, trim: true},
-    gender: {type: String,  enum: ['male','female'], trim: true, default: null},
+    gender: {type: String,  enum: ['male','female', ''], trim: true, default: ''},
     dob: {type: Date, trim: true, default: null},    
     about: {type: String, trim: true, default: null},
     last_known_lat: {type: String, trim: true},

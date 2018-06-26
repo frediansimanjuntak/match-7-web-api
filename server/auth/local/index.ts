@@ -51,6 +51,7 @@ router.post('/', function(req, res, next) {
             return res.status(401).json({message: "Incomplete Data Username/Password to logged in", code: 413});
           }
         })
+        .catch(err => {return res.status(401).json({message: err.message, code: 413})});
       })
       .catch(err => {return res.status(401).json({message: err.message, code: 413})});
     }
