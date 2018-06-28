@@ -39,6 +39,13 @@ let UsersSchema = new mongoose.Schema({
       type: Schema.Types.ObjectId,
 		  ref: 'Interests'	
     }],
+    photos: [{
+      indexOf: {type: String, trim: true},
+      attachment: {
+        type: Schema.Types.ObjectId,
+        ref: 'Attachments'
+      }
+    }],
     blocked_users:[{
       type: Schema.Types.ObjectId,
 		  ref: 'Users'

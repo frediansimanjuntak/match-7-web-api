@@ -78,8 +78,22 @@ attachmentSchema.static("createAttachment", (body:Object, attachments:Object, us
             return _.extend(element, {user: userId});
         });
         Attachment.insertMany(newArr, (err, saved) => {
-            err ? reject({success:false, message: err.message})
-                : resolve({success:true, data: saved});
+            if (err) {
+                reject({success:false, message: err.message})
+            }
+            else if (saved) {
+                var attArr = _.map(saved, (element, index) => {
+                    let data = {
+                        indexOf: index,
+                        attachment: element._id
+                    }
+                    return data;
+                })           
+                let updatePushObj = {$push: {}};        
+                updatePushObj.$push['photos'] = ({$each: attArr});
+                User.updateUser(userId, updatePushObj);
+                resolve({success:true, data: saved});
+            }
         })
     });
 });
