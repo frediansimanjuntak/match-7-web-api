@@ -6,6 +6,7 @@ client/dev/bower_components
 typings
 dist
 uploads
+tmp
 *.log
 *.log.*
 *.cfg

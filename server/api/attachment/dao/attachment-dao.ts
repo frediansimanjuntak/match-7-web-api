@@ -35,7 +35,7 @@ attachmentSchema.static("getLink", (id: string):Promise<any> => {
                 let fileName = attachment.filename;
                 let ext = path.extname(fileName);
                 fs.readFile('./uploads/'+fileName, function(err, data) {
-                    temp.open({suffix: ext}, function(err, info) {
+                    temp.open({suffix: ext, dir: path.join('./tmp', "img")}, function(err, info) {
                         if (err) throw err;
                         fs.write(info.fd, data);
                         fs.close(info.fd, function(err) {                    

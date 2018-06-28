@@ -20,6 +20,7 @@ import {Routes} from "./routes/index";
 import * as multer from "multer";
 
 const app = express();
+app.use(express.static(__dirname + '/tmp/img'));
 
 var PORT = process.env.PORT || 7777;
 
