@@ -40,6 +40,10 @@ export class AttachmentRoutes {
     router
         .route("/api/attachment")
         .get(auth.isAuthenticated(), AttachmentController.getAll);
+    
+    router
+        .route("/api/attachment/link/:id")
+        .get(auth.isAuthenticated(), AttachmentController.getLink);
 
       router
         .route("/api/attachment/:id")

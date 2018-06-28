@@ -67,6 +67,8 @@
     "sha256": "^0.2.0",
     "spdy": "^3.4.4",
     "speakeasy": "^2.0.0",
+    "temp": "^0.8.3",
+    "tmp": "0.0.33",
     "typescript": "^2.4.1"
   },
   "devDependencies": {

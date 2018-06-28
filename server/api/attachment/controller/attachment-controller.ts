@@ -9,6 +9,13 @@ export class AttachmentController {
         .catch(error => res.status(400).json(error));
   }
 
+  static getLink(req: express.Request, res: express.Response):void {
+    AttachmentDAO
+        ["getLink"](req.params.id)
+        .then(attachment => res.status(200).json(attachment))
+        .catch(error => res.status(400).json(error));
+  }
+
   static getById(req: express.Request, res: express.Response):void {
     AttachmentDAO
         ["getById"](req.params.id)

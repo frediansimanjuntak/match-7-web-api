@@ -3,12 +3,18 @@ import * as Promise from "bluebird";
 import * as _ from "lodash";
 import attachmentSchema from "../model/attachment-model";
 import User from '../../user/dao/user-dao';
-import * as fs from "fs";
+// import * as fs from "fs";
+// import * as temp  from 'temp';
+
+var fs   = require('fs'),
+    temp = require('temp');
+
+var path = require('path')
 
 attachmentSchema.static("getAll", ():Promise<any> => {
     return new Promise((resolve:Function, reject:Function) => {
         let _query = {};
-
+        
         Attachment.find(_query)
             .populate('user')
             .exec((err, attachments) => {
@@ -18,17 +24,46 @@ attachmentSchema.static("getAll", ():Promise<any> => {
     });
 });
 
+attachmentSchema.static("getLink", (id: string):Promise<any> => {
+    return new Promise((resolve:Function, reject:Function) => {
+        Attachment.findById(id)
+        .exec((err, attachment) => {
+            if (err) {
+                reject({success:false, message: err.message})
+            }
+            else if (attachment) {
+                let fileName = attachment.filename;
+                let ext = path.extname(fileName);
+                fs.readFile('./uploads/'+fileName, function(err, data) {
+                    temp.open({suffix: ext}, function(err, info) {
+                        if (err) throw err;
+                        fs.write(info.fd, data);
+                        fs.close(info.fd, function(err) {                    
+                            console.log(info.path);
+                            if (err) {
+                                reject({success:false, message: err.message})
+                            }
+                            resolve({success:true, data: {link:info.path}});
+                        });
+                    });
+                });
+            }
+        });
+    });
+});
+
 attachmentSchema.static("getById", (id: string):Promise<any> => {
     return new Promise((resolve:Function, reject:Function) => {
         if (!_.isString(id)) {
             return reject(new TypeError("Id is not a valid string."));
         }
+        
 
         Attachment.findById(id)
             .populate('user')
             .exec((err, attachment) => {
               err ? reject({success:false, message: err.message})
-                  : resolve({success:true, data: attachment});
+                  : resolve({success:true, data: attachment});  
             });
     });
 });
