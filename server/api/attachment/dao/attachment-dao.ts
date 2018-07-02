@@ -37,9 +37,6 @@ attachmentSchema.static("getLink", (id: string):Promise<any> => {
                 let ext = path.extname(fileName);
                 tmp.file({postfix: ext, dir: path.join('temp_img')}, function (err, path, fd, cleanupCallback) {
                     if (err) throw err;
-
-                    console.log("File: ", path.name);
-                    // console.log("Filedescriptor: ", fd);
                     fs.readFile('./uploads/'+fileName, function(err, data) {                            
                         fs.writeFileSync(path, data);
                     })

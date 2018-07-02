@@ -28,7 +28,7 @@ export class UserController {
     let _userId = req["user"]._id;
 
     UserDAO
-        ["me2"](_userId)
+        ["me"](_userId)
         .then(user => res.status(200).json(user))
         .catch(error => res.status(400).json(error));
   }
