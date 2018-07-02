@@ -42,6 +42,25 @@ userSchema.static("getById", (id: string):Promise<any> => {
     });
 });
 
+userSchema.static('me2', (user_id: string): Promise<any> => 
+    User.findOne({_id: user_id}).lean()
+    .then(user => Promise.all(
+        user.photos.map(usr => 
+            Attachment.getLink(usr.attachment)
+            .then(attLink => 
+                Promise.resolve(console.log('ATTLINK', usr.attachment, attLink))
+                // .then(xx => _.set(element, {link2: 'attLink'}))
+                .then(xx => _.extend(usr, {link: attLink.substring(9)}))
+            )
+        )
+    ).then(photos => Promise.all([
+        console.log('PHOTOS', photos),
+        _.set(user, {photos})
+    ]) ))
+    .then( ([xxx, user]) => _.set({success: true, data: user}))
+    .catch(console.log)
+)
+
 userSchema.static("me", (user_id: string):Promise<any> => {
     return new Promise((resolve:Function, reject:Function) => {
         User.findOne({'_id':user_id})
@@ -50,14 +69,25 @@ userSchema.static("me", (user_id: string):Promise<any> => {
                     reject({success:false, message: err.message})
                 }
                 else if (user) {
-                    var newArr = _.map(user.photos, function(element) {                         
+                    let promises = user.photos.map(element => new Promise((s, r) => {
                         Attachment.getLink(element.attachment, (attLink => {
-                            return _.set(element, {link: attLink})
-                            // return _.extend(element, {link: attLink.data.link});
+                            var result = _.set(element, {link: attLink})
+                            s(result)
                         }))
-                    });
-                    console.log (newArr);
-                    resolve({success:true, data: user});
+                    }))
+                    Promise.all(promises)
+                    .then(photos => {
+                        user.photos = photos
+                        resolve({success: true, data: user})
+                    })
+                    // var newArr = _.map(user.photos, function(element) {                         
+                    //     Attachment.getLink(element.attachment, (attLink => {
+                    //         return _.set(element, {link: attLink})
+                    //         // return _.extend(element, {link: attLink.data.link});
+                    //     }))
+                    // });
+                    // console.log (newArr);
+                    // resolve({success:true, data: user});
                 }
             });       
     });

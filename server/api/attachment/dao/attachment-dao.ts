@@ -28,67 +28,25 @@ attachmentSchema.static("getAll", ():Promise<any> => {
 });
 
 attachmentSchema.static("getLink", (id: string):Promise<any> => {
-    return new Promise((resolve:Function, reject:Function) => {
-        // if (!_.isString(id)) {
-        //     return reject(new TypeError("Id is not a valid string."));
-        // }
-        
-        Attachment.findById(id)
-            .exec((err, attachment) => {
-                if (err) reject({success:false, message: err.message});
-                else if (attachment) {
-                    let fileName = attachment.filename;
-                    let ext = path.extname(fileName);
-                    tmp.file({postfix: ext, dir: path.join('temp_img')}, function (err, path, fd, cleanupCallback) {
-                        if (err) throw err;
-    
-                        console.log("File: ", path);
-                        console.log("Filedescriptor: ", fd);
-                        fs.readFile('./uploads/'+fileName, function(err, data) {                            
-                            fs.writeFileSync(path, data);
-                        })
-                        resolve(path);
-                    });
-                }
-            });
-        // Attachment.findById(id)
-        // .exec((err, attachment) => {
-        //     if (err) {
-        //         reject({success:false, message: err.message})
-        //     }
-        //     else if (attachment) {
-        //         resolve (attachment);
-        //         // let fileName = attachment.filename;
-        //         // console.log(fileName);
-        //         // let ext = path.extname(fileName);
-        //         // tmp.file(function (err, path, fd, cleanupCallback) {
-        //         //     if (err) throw err;
+    return new Promise((resolve:Function, reject:Function) => {        
+    Attachment.findById(id)
+        .exec((err, attachment) => {
+            if (err) reject({success:false, message: err.message});
+            else if (attachment) {
+                let fileName = attachment.filename;
+                let ext = path.extname(fileName);
+                tmp.file({postfix: ext, dir: path.join('temp_img')}, function (err, path, fd, cleanupCallback) {
+                    if (err) throw err;
 
-        //         //     console.log("File: ", path);
-        //         //     console.log("Filedescriptor: ", fd);
-        //         //     fs.writeFileSync(path, "Hello world!")
-        //         // });
-        //         // fs.readFile('./uploads/'+fileName, function(err, data) {
-
-                    
-        //         //     // temp.open({suffix: ext, dir: path.join('./tmp', "img")}, function(err, info) {
-        //         //     //     if (err) throw err;
-        //         //     //     fs.write(info.fd, data, function(err) {           
-        //         //     //         if (err) {
-        //         //     //             reject({success:false, message: err.message})
-        //         //     //         }
-        //         //     //     });
-        //         //     //     fs.close(info.fd, function(err) {      
-        //         //     //         if (err) {
-        //         //     //             reject({success:false, message: err.message})
-        //         //     //         }
-        //         //     //     });                                      
-        //         //     //     console.log(info.path);
-        //         //     //     resolve({success:true, data: {link:info.path}});
-        //         //     // });
-        //         // });
-        //     }
-        // });
+                    console.log("File: ", path.name);
+                    // console.log("Filedescriptor: ", fd);
+                    fs.readFile('./uploads/'+fileName, function(err, data) {                            
+                        fs.writeFileSync(path, data);
+                    })
+                    resolve(path);
+                });
+            }
+        });
     });
 });
 
