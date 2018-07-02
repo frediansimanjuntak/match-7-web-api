@@ -24,7 +24,7 @@ export class Routes {
 
     
      app.use('/auth', require('../auth').default);
-     app.use("/", router);
+     app.use("/", router);     
    }
 }
   

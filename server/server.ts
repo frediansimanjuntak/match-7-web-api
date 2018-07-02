@@ -17,10 +17,8 @@ import * as fs from "fs";
 import {RoutesConfig} from "./config/routes.conf";
 import {DBConfig} from "./config/db.conf";
 import {Routes} from "./routes/index";
-import * as multer from "multer";
 
 const app = express();
-app.use(express.static(__dirname + '/tmp/img'));
 
 var PORT = process.env.PORT || 7777;
 
@@ -33,6 +31,8 @@ DBConfig.init();
 //   res.header("Access-Control-Allow-Methods", "POST, GET, PUT, DELETE, OPTIONS")
 //   next()
 // })
+process.env.PWD = process.cwd()
+app.use(express.static(process.env.PWD + '/temp_img'));
 
 
 Routes.init(app, express.Router());

@@ -5,9 +5,8 @@ import userSchema from "../model/user-model";
 import {email} from '../../../global/func/email';
 import {api_qs} from '../../../global/func/api_qs';
 import {google2fa} from '../../../global/func/google2fa';
-import * as request from 'request'; 
-import * as fetch from "node-fetch";
-import * as FormData from "form-data";
+import Attachment from '../../attachment/dao/attachment-dao';
+import { link } from "fs";
 
 userSchema.static("getAll", ():Promise<any> => {
     return new Promise((resolve:Function, reject:Function) => {
@@ -47,8 +46,19 @@ userSchema.static("me", (user_id: string):Promise<any> => {
     return new Promise((resolve:Function, reject:Function) => {
         User.findOne({'_id':user_id})
             .exec((err, user) => {
-                err ? reject({success:false, message: err.message})
-                    : resolve({success:true, data: user});
+                if (err) {
+                    reject({success:false, message: err.message})
+                }
+                else if (user) {
+                    var newArr = _.map(user.photos, function(element) {                         
+                        Attachment.getLink(element.attachment, (attLink => {
+                            return _.set(element, {link: attLink})
+                            // return _.extend(element, {link: attLink.data.link});
+                        }))
+                    });
+                    console.log (newArr);
+                    resolve({success:true, data: user});
+                }
             });       
     });
 });
