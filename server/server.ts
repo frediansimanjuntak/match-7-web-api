@@ -17,6 +17,7 @@ import * as fs from "fs";
 import {RoutesConfig} from "./config/routes.conf";
 import {DBConfig} from "./config/db.conf";
 import {Routes} from "./routes/index";
+import {Cron} from "./cron/index";
 
 const app = express();
 
@@ -24,6 +25,7 @@ var PORT = process.env.PORT || 7777;
 
 RoutesConfig.init(app);
 DBConfig.init();
+Cron.init();
 
 // app.use((req, res, next) => {
 //   res.header("Access-Control-Allow-Origin", "*")

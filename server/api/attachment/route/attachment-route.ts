@@ -41,6 +41,11 @@ export class AttachmentRoutes {
         .route("/api/attachment")
         .get(auth.isAuthenticated(), AttachmentController.getAll);
     
+        
+    router
+        .route("/api/attachment/delete")
+        .post(auth.isAuthenticated(), AttachmentController.deleteFile);
+    
     router
         .route("/api/attachment/link/:id")
         .get(auth.isAuthenticated(), AttachmentController.getLink);

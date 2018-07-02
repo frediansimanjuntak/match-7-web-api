@@ -52,4 +52,12 @@ export class AttachmentController {
       .then((attachment) => res.status(200).json(attachment))
       .catch(error => res.status(400).json(error));
   }  
+  
+  static deleteFile(req: express.Request, res: express.Response): void {
+
+    AttachmentDAO
+      ["deleteFile"]()
+      .then((attachment) => res.status(200).json(attachment))
+      .catch(error => res.status(400).json(error));
+  }  
 }

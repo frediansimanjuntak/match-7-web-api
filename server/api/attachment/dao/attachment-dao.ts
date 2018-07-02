@@ -3,16 +3,10 @@ import * as Promise from "bluebird";
 import * as _ from "lodash";
 import attachmentSchema from "../model/attachment-model";
 import User from '../../user/dao/user-dao';
-// import * as fs from "fs";
-// import * as temp  from 'temp';
-
-// var fs   = require('fs'),
-//     temp = require('temp');
-
 var tmp = require('tmp');
 var fs = require('fs');
-
-var path = require('path')
+const fse = require('fs-extra');
+var path = require('path');
 
 attachmentSchema.static("getAll", ():Promise<any> => {
     return new Promise((resolve:Function, reject:Function) => {
@@ -132,6 +126,19 @@ attachmentSchema.static("deleteAttachment", (id:string, userId:string):Promise<a
                     });
                 }
             });
+    });
+});
+
+attachmentSchema.static("deleteFile", ():Promise<any> => {
+    return new Promise((resolve:Function, reject:Function) => {
+        try {
+            fse.emptyDir('./temp_img');
+            resolve({success:true, data: {message:"Deleted success"}});
+        } 
+        catch (err) {
+            reject({success:false, message: err.message})
+            // handle the error
+        }
     });
 });
 
