@@ -1,4 +1,4 @@
-import {tempFile} from './tempFile';
+import {tempFile} from './tempfile';
 
 export class Cron{
   static init ():void {      
