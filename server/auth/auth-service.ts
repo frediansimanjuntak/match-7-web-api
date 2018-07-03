@@ -93,7 +93,7 @@ export function signToken(id) {
   // if(remember == "false"){
   //   session = config.secrets.session, {expiresIn: 30};
   // }
-  return jwt.sign({ _id: id}, config.secrets.session, {expiresIn: 60 * 60});
+  return jwt.sign({ _id: id}, config.secrets.session, {expiresIn:  60 * 60 * 60 * 60});
 }
 
 
