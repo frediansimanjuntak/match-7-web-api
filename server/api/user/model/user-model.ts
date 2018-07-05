@@ -39,18 +39,18 @@ let UsersSchema = new mongoose.Schema({
     // }],
     interest: [{
       type: Schema.Types.ObjectId,
-		  ref: 'Interests'	
+		  ref: 'Interest'	
     }],
     photos: [{
       default_img: {type: Boolean, default: false, trim: true},
       attachment: {
         type: Schema.Types.ObjectId,
-        ref: 'Attachments'
+        ref: 'Attachment'
       }
     }],
     blocked_users:[{
       type: Schema.Types.ObjectId,
-		  ref: 'Users'
+		  ref: 'User'
     }],
     created_at: {type: Date, default: Date.now},
     updated_at: {type: Date, default: Date.now}

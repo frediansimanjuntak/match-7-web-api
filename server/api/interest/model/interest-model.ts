@@ -1,6 +1,6 @@
 import * as mongoose from "mongoose";
+const Schema = mongoose.Schema;
 
-var Schema = mongoose.Schema;
 let schema = new mongoose.Schema({
     name: {type: String, required: true, trim: true},
     description: {type: String, trim: true},

@@ -227,14 +227,13 @@ userSchema.static("addUserOccupation", (id:string, user:any):Promise<any> => {
     });
 });
 
-userSchema.static("addUserInterest", (id:string, user:any):Promise<any> => {
+userSchema.static("addUserInterest", (id:string, user:object):Promise<any> => {
     return new Promise((resolve:Function, reject:Function) => {
-        if (!_.isObject(user)) {
-            return reject(new TypeError("User is not a valid object."));
-        }        
+        console.log(user);
         let updatePushObj = {$push: {}};        
         updatePushObj.$push['interest'] = ({$each: user});
         User.me(id).then((me_data) => {
+            console.log(me_data);
             if(me_data.success == true) {
                 if (me_data.data.interest.length > 0) {
                     let query = { $set: { interest: [] }}
