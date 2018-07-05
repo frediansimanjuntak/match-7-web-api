@@ -43,7 +43,7 @@ userSchema.static("getById", (id: string):Promise<any> => {
 });
 
 userSchema.static('me', (user_id: string): Promise<any> => 
-    User.findOne({_id: user_id}).lean()
+    User.findOne({_id: user_id}).populate("interest").lean()
     .then(user => Promise.all(
         user.photos.map(usr => 
             Attachment.getLink(usr.attachment)
