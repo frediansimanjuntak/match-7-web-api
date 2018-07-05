@@ -58,6 +58,7 @@ export class UserRoutes {
                   
       router
         .route("/api/user/photo/:id_photo/:id_attachment")
+        .post(auth.isAuthenticated(), UserController.changePhoto)
         .delete(auth.isAuthenticated(), UserController.deletePhoto);
 
       router

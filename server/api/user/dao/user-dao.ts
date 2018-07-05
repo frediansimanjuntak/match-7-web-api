@@ -272,6 +272,33 @@ userSchema.static("deletePhoto", (id:string, id_photo:string, id_attachment:stri
     });
 });
 
+userSchema.static("changePhoto", (id:string, id_photo:string, id_attachment:string, body:Object, attachments:Object):Promise<any> => {
+    return new Promise((resolve:Function, reject:Function) => { 
+        User.deletePhoto(id, id_photo, id_attachment);
+        Attachment.createAttachment(body, attachments, id).then((result) => {
+            resolve({success:true, data: result});
+        })
+        .catch(err => reject({success:false, message: err.message}))
+        
+        // User.me(id).then((me_data) => {
+        //     if(me_data.success == true) {       
+        //         User.updateUser(id, {
+        //             $pull: {
+        //                 "photos": {
+        //                     "_id": id_photo
+        //                 }
+        //             }}  )
+        //         .then((result) => {
+        //             Attachment.deleteAttachment(id_attachment, id);
+        //             resolve({success:true, data: result});
+        //         })
+        //         .catch(err => {reject({success:false, message: err.message})})
+        //     }
+        // })
+        // .catch(err => {reject({success:false, message: err.message})})
+    });
+});
+
 userSchema.static("enableUserGoogle2fa", (id:string):Promise<any> => {
     return new Promise((resolve:Function, reject:Function) => {     
         let google2fa_data = google2fa.createToken().then(google2fa_data => {

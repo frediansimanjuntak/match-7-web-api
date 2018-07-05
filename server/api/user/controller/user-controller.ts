@@ -111,6 +111,19 @@ export class UserController {
         .catch(error => res.status(400).json(error));
   }
 
+  static changePhoto(req: express.Request, res: express.Response): void {
+    let _userId = req["user"]._id;
+    let _id_photo = req.params.id_photo;
+    let _id_attachment = req.params.id_attachment;
+    let _body = req.body;
+    let _files = req.files;
+
+    UserDAO
+        ["changePhoto"](_userId, _id_photo, _id_attachment, _body, _files)
+        .then((user) => res.status(200).json(user))
+        .catch(error => res.status(400).json(error));
+  }
+
   static enableUserGoogle2fa(req: express.Request, res: express.Response): void {
     let _userId = req["user"]._id;
     UserDAO
