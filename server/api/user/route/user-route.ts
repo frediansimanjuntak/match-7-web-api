@@ -60,6 +60,10 @@ export class UserRoutes {
         .route("/api/user/photo/:id_photo/:id_attachment")
         .post(auth.isAuthenticated(), UserController.changePhoto)
         .delete(auth.isAuthenticated(), UserController.deletePhoto);
+              
+      router
+        .route("/api/user/photo/default/:id_photo")
+        .post(auth.isAuthenticated(), UserController.changeDefaultPhoto)
 
       router
         .route("/api/users/google2fa/enable")

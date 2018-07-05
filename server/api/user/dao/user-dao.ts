@@ -279,23 +279,35 @@ userSchema.static("changePhoto", (id:string, id_photo:string, id_attachment:stri
             resolve({success:true, data: result});
         })
         .catch(err => reject({success:false, message: err.message}))
-        
-        // User.me(id).then((me_data) => {
-        //     if(me_data.success == true) {       
-        //         User.updateUser(id, {
-        //             $pull: {
-        //                 "photos": {
-        //                     "_id": id_photo
-        //                 }
-        //             }}  )
-        //         .then((result) => {
-        //             Attachment.deleteAttachment(id_attachment, id);
-        //             resolve({success:true, data: result});
-        //         })
-        //         .catch(err => {reject({success:false, message: err.message})})
-        //     }
-        // })
-        // .catch(err => {reject({success:false, message: err.message})})
+    });
+});
+
+userSchema.static("changeDefaultPhoto", (id:string, id_photo:string):Promise<any> => {
+    return new Promise((resolve:Function, reject:Function) => {            
+        let ObjectID = mongoose.Types.ObjectId;      
+        User.me(id).then((me_data) => {
+            if(me_data.success == true) {       
+                me_data.photos.map(photo => {
+                    if (photo.default_img == true) {                        
+                        User.update({"_id": id, "photos": {$elemMatch: {"_id": new ObjectID(photo._id)}}}, {
+                            $set: {
+                                "photos.$.default_img":false
+                            }
+                        })
+                    }}
+                )
+                User.update({"_id": id, "photos": {$elemMatch: {"_id": new ObjectID(id_photo)}}}, {
+                    $set: {
+                        "photos.$.default_img":true
+                    }
+                })
+                .exec((err, saved) => {
+                    err ? reject({message: err.message})
+                        : resolve(saved);
+                });
+            }
+        })
+        .catch(err => {reject({success:false, message: err.message})})
     });
 });
 
