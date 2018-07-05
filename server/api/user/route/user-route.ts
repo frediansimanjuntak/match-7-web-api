@@ -54,8 +54,12 @@ export class UserRoutes {
 
       router
         .route("/api/user/interest")
-        .post(auth.isAuthenticated(), UserController.addUserInterest);       
-      
+        .post(auth.isAuthenticated(), UserController.addUserInterest);   
+                  
+      router
+        .route("/api/user/photo/:id_photo/:id_attachment")
+        .delete(auth.isAuthenticated(), UserController.deletePhoto);
+
       router
         .route("/api/users/google2fa/enable")
         .post(auth.isAuthenticated(), UserController.enableUserGoogle2fa);

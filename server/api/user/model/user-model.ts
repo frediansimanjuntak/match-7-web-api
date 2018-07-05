@@ -40,7 +40,7 @@ let UsersSchema = new mongoose.Schema({
 		  ref: 'Interests'	
     }],
     photos: [{
-      indexOf: {type: String, trim: true},
+      default_img: {type: Boolean, default: false, trim: true},
       attachment: {
         type: Schema.Types.ObjectId,
         ref: 'Attachments'

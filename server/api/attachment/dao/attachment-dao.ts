@@ -73,7 +73,6 @@ attachmentSchema.static("createAttachment", (body:Object, attachments:Object, us
             else if (saved) {
                 var attArr = _.map(saved, (element, index) => {
                     let data = {
-                        indexOf: index,
                         attachment: element._id
                     }
                     return data;
@@ -106,7 +105,7 @@ attachmentSchema.static("deleteAttachment", (id:string, userId:string):Promise<a
         if (!_.isString(id)) {
             return reject(new TypeError("Id is not a valid string."));
         }
-        Attachment.findByOne({'_id':id, 'user':userId})
+        Attachment.findOne({'_id':id, 'user':userId})
             .exec((err, data) => {
                 if (err) {
                     reject({success:false, message: err.message})
@@ -117,7 +116,7 @@ attachmentSchema.static("deleteAttachment", (id:string, userId:string):Promise<a
                             reject({success:false, message: error})
                         }
                         else {
-                            Attachment.findByOneAndRemove({'_id':id, 'user':userId})
+                            Attachment.findOneAndRemove({'_id':id, 'user':userId})
                                 .exec((err, deleted) => {
                                 err ? reject({success:false, message: err.message})
                                     : resolve({success:true, data: {message:"Deleted success"}});
