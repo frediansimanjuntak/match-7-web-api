@@ -33,9 +33,13 @@ const upload = multer({
 
 export class AttachmentRoutes {
     static init(router: express.Router) {
-      router
+    router
         .route("/api/attachment")
         .post(auth.isAuthenticated(), upload.array('attachment', 8), AttachmentController.createAttachment);
+
+    router
+        .route("/api/user/photo/:id_photo/:id_attachment")
+        .post(auth.isAuthenticated(), upload.array('attachment', 8), AttachmentController.changePhotoUser);
 
     router
         .route("/api/attachment")

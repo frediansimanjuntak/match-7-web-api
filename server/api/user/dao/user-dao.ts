@@ -271,13 +271,17 @@ userSchema.static("deletePhoto", (id:string, id_photo:string, id_attachment:stri
     });
 });
 
-userSchema.static("changePhoto", (id:string, id_photo:string, id_attachment:string, body:Object, attachments:Object):Promise<any> => {
+userSchema.static("changePhoto", (id:string, id_photo:string, id_attachment:string, attachments:Object):Promise<any> => {
     return new Promise((resolve:Function, reject:Function) => { 
-        User.deletePhoto(id, id_photo, id_attachment);
-        Attachment.createAttachment(body, attachments, id).then((result) => {
-            resolve({success:true, data: result});
+        console.log(attachments);
+        User.deletePhoto(id, id_photo, id_attachment).then((res) => {
+            Attachment.createAttachment(attachments, id).then((result) => {
+                console.log(result);    
+                resolve({success:true, data: result});
+            })
+            .catch(err => reject({success:false, message: err.message}))
         })
-        .catch(err => reject({success:false, message: err.message}))
+        .catch(err => reject({success:false, message: err.message}));
     });
 });
 

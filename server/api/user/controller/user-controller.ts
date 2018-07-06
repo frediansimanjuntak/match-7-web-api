@@ -115,11 +115,10 @@ export class UserController {
     let _userId = req["user"]._id;
     let _id_photo = req.params.id_photo;
     let _id_attachment = req.params.id_attachment;
-    let _body = req.body;
     let _files = req.files;
 
     UserDAO
-        ["changePhoto"](_userId, _id_photo, _id_attachment, _body, _files)
+        ["changePhoto"](_userId, _id_photo, _id_attachment, _files)
         .then((user) => res.status(200).json(user))
         .catch(error => res.status(400).json(error));
   }

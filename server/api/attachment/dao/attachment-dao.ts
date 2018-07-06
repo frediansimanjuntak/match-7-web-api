@@ -57,11 +57,35 @@ attachmentSchema.static("getById", (id: string):Promise<any> => {
     });
 });
 
-attachmentSchema.static("createAttachment", (body:Object, attachments:Object, userId:string):Promise<any> => {
+attachmentSchema.static("createAttachment", (attachments:Object, userId:string):Promise<any> => {
     return new Promise((resolve:Function, reject:Function) => {
-      if (!_.isObject(body)) {
-        return reject(new TypeError("Attachment is not a valid object."));
-      }
+      let files = [].concat(attachments);
+        var newArr = _.map(files, function(element) { 
+            return _.extend(element, {user: userId});
+        });
+        Attachment.insertMany(newArr, (err, saved) => {
+            if (err) {
+                reject({success:false, message: err.message})
+            }
+            else if (saved) {
+                var attArr = _.map(saved, (element, index) => {
+                    let data = {
+                        attachment: element._id
+                    }
+                    return data;
+                })           
+                let updatePushObj = {$push: {}};        
+                updatePushObj.$push['photos'] = ({$each: attArr});
+                User.updateUser(userId, updatePushObj);
+                resolve({success:true, data: saved});
+            }
+        })
+    });
+});
+
+attachmentSchema.static("changePhotoUser", (attachments:Object, userId:string, id_photo:string, id_attachment:string):Promise<any> => {
+    return new Promise((resolve:Function, reject:Function) => {
+        User.deletePhoto(userId, id_photo, id_attachment);
       let files = [].concat(attachments);
         var newArr = _.map(files, function(element) { 
             return _.extend(element, {user: userId});

@@ -24,15 +24,26 @@ export class AttachmentController {
   }
 
   static createAttachment(req: express.Request, res: express.Response):void {
-      let _body = req.body;
       let _files = req.files;
       let _userId = req["user"]._id;
 
       AttachmentDAO
-        ["createAttachment"](_body, _files, _userId)
+        ["createAttachment"](_files, _userId)
         .then(attachment => res.status(201).json(attachment))
         .catch(error => res.status(400).json(error));
   }
+
+  static changePhotoUser(req: express.Request, res: express.Response):void {
+    let _files = req.files;
+    let _userId = req["user"]._id;
+    let _id_photo = req.params.id_photo;
+    let _id_attachment = req.params.id_attachment;
+
+    AttachmentDAO
+      ["changePhotoUser"](_files, _userId, _id_photo, _id_attachment)
+      .then(attachment => res.status(201).json(attachment))
+      .catch(error => res.status(400).json(error));
+}
   
   static updateAttachment(req: express.Request, res: express.Response):void {
     let _id = req.params.id;
