@@ -290,7 +290,7 @@ userSchema.static("changeDefaultPhoto", (id:string, id_photo:string):Promise<any
         let ObjectID = mongoose.Types.ObjectId;      
         User.me(id).then((me_data) => {
             if(me_data.success == true) {       
-                me_data.photos.map(photo => {
+                me_data.data.photos.map(photo => {
                     if (photo.default_img == true) {                        
                         User.update({"_id": id, "photos": {$elemMatch: {"_id": new ObjectID(photo._id)}}}, {
                             $set: {
