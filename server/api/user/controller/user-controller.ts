@@ -124,7 +124,6 @@ export class UserController {
   }
 
   static changeDefaultPhoto(req: express.Request, res: express.Response): void {
-    console.log('this is the route')
     let _userId = req["user"]._id;
     let _id_photo = req.params.id_photo;
 
